@@ -46,10 +46,6 @@ font-size: 18px;
 .control-button:hover {
   border: 2px solid white;
 }
-.control-button:focus {
-  padding: 9px 19px;
-  border: 3px solid #8000CF;
-}
 
 .row {
   display: flex;
@@ -65,10 +61,15 @@ font-size: 18px;
 }
 
 .button-container button {
+  border: 2px solid #8000CF;
+  border-radius: 5px;
   margin: 20px;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+}
+.button-container button:hover {
+  border: 2px solid black;
 }
 
 #glassware-container {
@@ -123,7 +124,7 @@ font-size: 18px;
   <div class="row">
     <div class="column-dropdowns" style="flex: 80%;">
       <label for="Selector" style="margin-right: 5px;">
-        <strong>1)</strong> Select Unknown Solution ID:
+        <strong>1)</strong> Select Solution ID:
       </label>
       <select id="Selector">
         <option value="" selected>Choose from Dropdown</option>
@@ -162,8 +163,8 @@ font-size: 18px;
   <p id="total-mass"><span>0.000</span> g</p>
 </div>
 <div class="button-container">
-  <button id="tareButton" class="control-button">Tare Balance</button>
-  <button id="removeSolution" class="control-button">Pour Solution Out</button>
+  <button id="tareButton" >Tare Balance</button>
+  <button id="removeSolution" type="button" disabled>Pour Solution Out</button>
 </div>
 
 <hr />
@@ -182,7 +183,7 @@ font-size: 18px;
 </p>
 </div>
   <script>
-function getRandomAmount(min, max) {
+    function getRandomAmount(min, max) {
   return Math.random() * (max - min) + min;
 }
 
@@ -195,12 +196,12 @@ let cylinderVolume = 380; // Total px hieght volume of the cylinder
 let px_scalor = 36.35; // number of px in mL in cylinder image
 
 const Densities = {
-  Sol01: { D: 0.67 }, // Gasoline
+  Sol01: { D: 0.67 }, //Gasoline
   Sol02: { D: 0.82 }, //Kerosene
   Sol03: { D: 1.44 }, //Honey
   Sol04: { D: 1.48 }, //Corn Syrup
   Sol05: { D: 1.33 }, //Maple Syrup
-  Sol06: { D: 0.67 }, // Gasoline
+  Sol06: { D: 0.67 }, //Gasoline
   Sol07: { D: 0.82 }, //Kerosene
   Sol08: { D: 1.44 }, //Honey
   Sol09: { D: 1.48 }, //Corn Syrup
@@ -283,14 +284,19 @@ function updateMassDisplay() {
 
 const dropsButtonBtn = document.getElementById("dropsButton");
 const pourButtonBtn = document.getElementById("pourButton");
+const removeBtn = document.getElementById("removeSolution");
 function enableButtons() {
   dropsButtonBtn.disabled = false;
   pourButtonBtn.disabled = false;
+  removeBtn.disabled = false;
 }
 function disableButtons() {
   dropsButtonBtn.disabled = true;
   pourButtonBtn.disabled = true;
+  removeBtn.disabled = true;
 }
+
+updateMassDisplay();
 
   </script>
   </body>
