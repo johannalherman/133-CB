@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chem 131 FOS-1 Salt Solution Density Simulation</title>
-<style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHEM 133 CB - Unknown Solution Density Simulation</title>
+    <style>
 body {
-max-width: 890px;
-margin: auto;
-font: 18px Arial, sans-serif;
-text-align: center;
-padding: 20px;
+  max-width: 890px;
+  margin: auto;
+  font: 18px Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
 }
-
+    
 hr {
-border: 2px solid #8000CF;
-border-radius: 5px;
+  border: 2px solid #8000CF;
+  border-radius: 5px;
 }
 
 #dropdown-container {
@@ -34,156 +34,156 @@ font-size: 20px;
 }
 
 .control-button {
-padding: 10px 20px;
-background-image: linear-gradient(#d89fff, #f3e3ff 50%, #d89fff);
-border: 2px solid #8000CF;
-border-radius: 5px;
-cursor: pointer;
-transition: background-color 0.3s;
+  padding: 10px 20px;
+  background-image: linear-gradient(#d89fff, #f3e3ff 50%, #d89fff);
+  border: 2px solid #8000CF;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 .control-button:hover {
-border: 2px solid white;
+  border: 2px solid white;
 }
 .control-button:focus {
-padding: 9px 19px;
-border: 3px solid #8000CF;
+  padding: 9px 19px;
+  border: 3px solid #8000CF;
 }
 
 .row {
-display: flex;
+  display: flex;
 }
 .column {
-flex: 50%;
-padding: 0px 20px;
+  flex: 50%;
+  padding: 0px 20px;
 }
 .column-dropdowns {
-margin: auto;
-display: flex;
-justify-content: left;
-align-items: left;
+  margin: auto;
+  display: flex;
+  justify-content: left;
+  align-items: left;
 }
 
 .button-container button {
-margin: 20px;
-padding: 10px 20px;
-font-size: 16px;
-cursor: pointer;
+  margin: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
+
 #glassware-container {
-margin: 20px;
-position: relative;
-display: inline-block;
+  margin: 20px;
+  position: relative;
+  display: inline-block;
 }
 
 #total-mass {
-position: absolute;
-bottom: 2.5%; /* Adjust as needed */
-left: 50%; /* Adjust as needed */
-transform: translateX(-50%);
-border-radius: 5px;
-font-size: 24px;
-font-weight: bold;
-z-index: 0;
+  position: absolute;
+  bottom: 2.5%; /* Adjust as needed */
+  left: 50%; /* Adjust as needed */
+  transform: translateX(-50%);
+  border-radius: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 0;
 }
 
 #cylinder {
-display: absolute;
-width: 400px;
-z-index: 5;
+  display: absolute;
+  width: 400px;
+  z-index: 5;
 }
 
 #solution {
-position: absolute;
-bottom: 23.4%;
-left: 50%; transform: translateX(-50%);
-width: 13%;
-height: 0;
-background: #abdcf2;
-transition: height 0.3s ease-in-out;
-opacity: 0.75;
-z-index: -10;
+  position: absolute;
+  bottom: 23.4%;
+  left: 50%; transform: translateX(-50%);
+  width: 13%;
+  height: 0;
+  background: #abdcf2;
+  transition: height 0.3s ease-in-out;
+  opacity: 0.75;
+  z-index: -10;
 }
 .solution::after {
-content: "";
-position: absolute;
-top: 0px;
-right: 50%; transform: translateX(50%);
-width: 100%;
-height: 5px;
-background: #def1fa; /* Subtle meniscus highlight */
-border-radius: 0% 0% 50% 50%; /* Round only the bottom corners */
-z-index: 0;
+  content: "";
+  position: absolute;
+  top: 0px;
+  right: 50%; transform: translateX(50%);
+  width: 100%;
+  height: 5px;
+  background: #def1fa; /* Subtle meniscus highlight */
+  border-radius: 0% 0% 50% 50%; /* Round only the bottom corners */
+  z-index: 0;
 }
-</style>
-</head>
-<body>
-<div id="dropdown-container">
-<div class="row">
-<div class="column-dropdowns" style="flex: 80%;">
-<label for="Selector" style="margin-right: 5px;">
-<strong>1)</strong> Select Unknown Solution ID:
-</label>
-<select id="Selector">
-<option value="" selected>Choose from Dropdown</option>
-<option value="Sol01">CB-01</option>
-<option value="Sol02">CB-02</option>
-<option value="Sol03">CB-03</option>
-<option value="Sol04">CB-04</option>
-<option value="Sol05">CB-05</option>
-<option value="Sol06">CB-06</option>
-<option value="Sol07">CB-07</option>
-<option value="Sol08">CB-08</option>
-<option value="Sol09">CB-09</option>
-<option value="Sol10">CB-10</option>
-</select>
-</div>
-<div class="column-dropdowns" style="flex: 20%;">
-<button id="resetButton" class="control-button" onclick="reset()">
-Reset All Controls
-</button>
-</div>
-</div>
+    </style>
+  </head>
+  <body>
+    <div id="dropdown-container">
+  <div class="row">
+    <div class="column-dropdowns" style="flex: 80%;">
+      <label for="Selector" style="margin-right: 5px;">
+        <strong>1)</strong> Select Unknown Solution ID:
+      </label>
+      <select id="Selector">
+        <option value="" selected>Choose from Dropdown</option>
+        <option value="Sol01">CB-01</option>
+        <option value="Sol02">CB-02</option>
+        <option value="Sol03">CB-03</option>
+        <option value="Sol04">CB-04</option>
+        <option value="Sol05">CB-05</option>
+        <option value="Sol06">CB-06</option>
+        <option value="Sol07">CB-07</option>
+        <option value="Sol08">CB-08</option>
+        <option value="Sol09">CB-09</option>
+        <option value="Sol10">CB-10</option>
+      </select>
+    </div>
+    <div class="column-dropdowns" style="flex: 20%;">
+      <button id="resetButton" class="control-button" onclick="reset()">
+        Reset All Controls
+      </button>
+    </div>
+  </div>
 </div>
 
 <hr />
 <!--Balance Area #2 Code-->
 <div class="button-container">
-<button id="dropsButton" type="button" disabled>Add Drops</button>
-<button id="pourButton" type="button" disabled>Pour In</button>
+  <button id="dropsButton" type="button" disabled>Add Drops</button>
+  <button id="pourButton" type="button" disabled>Pour In</button>
 </div>
 <div id="glassware-container">
-<div id="solution" class="solution"></div>
-<img
-id="cylinder"
-src="https://github.com/johannalherman/133-CB/blob/main/Graduated%20Cylinder%20on%20Balance.png?raw=true"
-/>
-<p id="total-mass"><span>0.000</span> g</p>
+  <div id="solution" class="solution"></div>
+  <img
+    id="cylinder"
+    src="https://github.com/johannalherman/133-CB/blob/main/Graduated%20Cylinder%20on%20Balance.png?raw=true"
+  />
+  <p id="total-mass"><span>0.000</span> g</p>
 </div>
 <div class="button-container">
-<button id="tareButton" class="control-button">Tare Balance</button>
-<button id="removeSolution" class="control-button">Pour Solution Out</button>
+  <button id="tareButton" class="control-button">Tare Balance</button>
+  <button id="removeSolution" class="control-button">Pour Solution Out</button>
 </div>
 
 <hr />
 <div style="font: 16px Arial, sans-serif; color: #8000CF; text-align: left;">
 <p>
-<em
->This simulation was designed for use on a laptop or desktop computer.
-Functions may not operate on a mobile device.</em
->
+  <em
+    >This simulation was designed for use on a laptop or desktop computer.
+    Functions may not operate on a mobile device.</em
+  >
 </p>
 <p>
-<em
->Created by Johanna L. Herman, Ph.D. for use in CHEM 133 at the University
-of Delaware.</em
->
+  <em
+    >Created by Johanna L. Herman, Ph.D. for use in CHEM 133 at the University
+    of Delaware.</em
+  >
 </p>
 </div>
-
-<script>
+  <script>
 function getRandomAmount(min, max) {
-return Math.random() * (max - min) + min;
+  return Math.random() * (max - min) + min;
 }
 
 let densitySolution = 1;
@@ -195,103 +195,103 @@ let cylinderVolume = 380; // Total px hieght volume of the cylinder
 let px_scalor = 36.35; // number of px in mL in cylinder image
 
 const Densities = {
-Sol01: { D: 0.67 }, // Gasoline
-Sol02: { D: 0.82 }, //Kerosene
-Sol03: { D: 1.44 }, //Honey
-Sol04: { D: 1.48 }, //Corn Syrup
-Sol05: { D: 1.33 }, //Maple Syrup
-Sol06: { D: 0.67 }, // Gasoline
-Sol07: { D: 0.82 }, //Kerosene
-Sol08: { D: 1.44 }, //Honey
-Sol09: { D: 1.48 }, //Corn Syrup
-Sol10: { D: 1.33 }, //Maple Syrup
+  Sol01: { D: 0.67 }, // Gasoline
+  Sol02: { D: 0.82 }, //Kerosene
+  Sol03: { D: 1.44 }, //Honey
+  Sol04: { D: 1.48 }, //Corn Syrup
+  Sol05: { D: 1.33 }, //Maple Syrup
+  Sol06: { D: 0.67 }, // Gasoline
+  Sol07: { D: 0.82 }, //Kerosene
+  Sol08: { D: 1.44 }, //Honey
+  Sol09: { D: 1.48 }, //Corn Syrup
+  Sol10: { D: 1.33 }, //Maple Syrup
 };
 
 function reset() {
-const SolutionSelector = document.getElementById("Selector");
-SolutionSelector.value = "";
-disableButtons();
+  const SolutionSelector = document.getElementById("Selector");
+  SolutionSelector.value = "";
+  disableButtons();
 
-solVolume = 0;
-totalMass = cylinderMass;
-tareOffset = 0;
-updateMassDisplay();
-document.getElementById("solution").style.height = 0 + "px";
+  solVolume = 0;
+  totalMass = cylinderMass;
+  tareOffset = 0;
+  updateMassDisplay();
+  document.getElementById("solution").style.height = 0 + "px";
 }
 
 document
-.getElementById("Selector")
-.addEventListener("change", function (event) {
-currentSolution = event.target.value;
-densitySolution = Densities[currentSolution].D;
-enableButtons();
-});
+  .getElementById("Selector")
+  .addEventListener("change", function (event) {
+    currentSolution = event.target.value;
+    densitySolution = Densities[currentSolution].D;
+    enableButtons();
+  });
 
 document.getElementById("dropsButton").addEventListener("click", () => {
-addSolution("drops");
+  addSolution("drops");
 });
 document.getElementById("pourButton").addEventListener("click", () => {
-addSolution("pour");
+  addSolution("pour");
 });
 document.getElementById("removeSolution").addEventListener("click", () => {
-removeSolution();
+  removeSolution();
 });
 document.getElementById("tareButton").addEventListener("click", () => {
-tareOffset = totalMass;
-updateMassDisplay();
+  tareOffset = totalMass;
+  updateMassDisplay();
 });
 
 function addSolution(size) {
-if (size === "drops") {
-amount = 0.1;
-} else {
-amount = getRandomAmount(3, 4.5);
-}
-solVolume = Math.min(cylinderVolume / px_scalor, solVolume + amount);
-massSolution = solVolume * densitySolution;
-totalMass = massSolution + cylinderMass;
-updateMassDisplay();
-increaseLiquidLevel();
+  if (size === "drops") {
+    amount = 0.1;
+  } else {
+    amount = getRandomAmount(3, 4.5);
+  }
+  solVolume = Math.min(cylinderVolume / px_scalor, solVolume + amount);
+  massSolution = solVolume * densitySolution;
+  totalMass = massSolution + cylinderMass;
+  updateMassDisplay();
+  increaseLiquidLevel();
 }
 
 function removeSolution() {
-amount = getRandomAmount(1.5, 2.5);
-if (amount >= solVolume) {
-amount = solVolume;
-}
-solVolume = Math.max(0, solVolume - amount);
-massSolution = solVolume * densitySolution;
-totalMass = massSolution + cylinderMass;
-updateMassDisplay();
-increaseLiquidLevel();
+  amount = getRandomAmount(1.5, 2.5);
+  if (amount >= solVolume) {
+    amount = solVolume;
+  }
+  solVolume = Math.max(0, solVolume - amount);
+  massSolution = solVolume * densitySolution;
+  totalMass = massSolution + cylinderMass;
+  updateMassDisplay();
+  increaseLiquidLevel();
 }
 
 function increaseLiquidLevel() {
-if (solVolume > 0) {
-document.getElementById("solution").style.height =
-solVolume * px_scalor + 4 + "px";
-} else {
-document.getElementById("solution").style.height =
-solVolume * px_scalor + "px";
-}
+  if (solVolume > 0) {
+    document.getElementById("solution").style.height =
+      solVolume * px_scalor + 4 + "px";
+  } else {
+    document.getElementById("solution").style.height =
+      solVolume * px_scalor + "px";
+  }
 }
 function updateMassDisplay() {
-document.querySelector("#total-mass span").textContent = (
-totalMass - tareOffset
-).toFixed(3);
+  document.querySelector("#total-mass span").textContent = (
+    totalMass - tareOffset
+  ).toFixed(3);
 }
 
 const dropsButtonBtn = document.getElementById("dropsButton");
 const pourButtonBtn = document.getElementById("pourButton");
 function enableButtons() {
-dropsButtonBtn.disabled = false;
-pourButtonBtn.disabled = false;
+  dropsButtonBtn.disabled = false;
+  pourButtonBtn.disabled = false;
 }
 function disableButtons() {
-dropsButtonBtn.disabled = true;
-pourButtonBtn.disabled = true;
+  dropsButtonBtn.disabled = true;
+  pourButtonBtn.disabled = true;
 }
 
-</script>
-</body>
+  </script>
+  </body>
 </html>
