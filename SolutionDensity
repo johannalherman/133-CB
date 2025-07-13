@@ -1,301 +1,297 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chem 131 FOS-1 Salt Solution Density Simulation</title>
-  <style>
-    body {
-      max-width: 1000px;
-      margin: auto;
-      font: 18px Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-        
-    #instruction-message {
-      margin: auto;
-      text-align: left;
-    }
-    
-    hr {
-      border: 5px solid #FF2E37;
-      border-radius: 5px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chem 131 FOS-1 Salt Solution Density Simulation</title>
+<style>
+body {
+max-width: 890px;
+margin: auto;
+font: 18px Arial, sans-serif;
+text-align: center;
+padding: 20px;
+}
 
-    .reset-button-container button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+hr {
+border: 2px solid #8000CF;
+border-radius: 5px;
+}
 
-    .button-container button {
-      margin-top: 40px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    
-    .row {
-      display: flex;
-    }
+#dropdown-container {
+margin: 40px auto 20px auto;
+text-align: left;
+width: 800px;
+gap: 10px;
+padding: 10px 30px;
+background-color: #eed7fe;
+border: 2px solid black;
+border-radius: 8px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+#Selector {
+font-size: 20px;
+}
 
-    .column {
-      flex: 50%;
-      padding: 0px 20px;
-    }
-    
-    #glassware-container, #glassware-container-2 {
-      position: relative;
-      display: inline-block;
-    }
-    
-    #total-mass, #total-mass-2 {
-      position: absolute;
-      bottom: 2.5%; /* Adjust as needed */
-      left: 50%; /* Adjust as needed */
-      transform: translateX(-50%);
-      border-radius: 5px;
-      font-size: 24px;
-      font-weight: bold;
-      z-index: 0;
-    }
-    
-    #beaker, #cylinder {
-      display: absolute;
-      width: 400px;
-      z-index: 5;
-    }
+.control-button {
+padding: 10px 20px;
+background-image: linear-gradient(#d89fff, #f3e3ff 50%, #d89fff);
+border: 2px solid #8000CF;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.3s;
+}
+.control-button:hover {
+border: 2px solid white;
+}
+.control-button:focus {
+padding: 9px 19px;
+border: 3px solid #8000CF;
+}
 
-    #liquid {
-      position: absolute;
-      bottom: 21.6%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 38%;
-      height: 0;
-      background: #abdcf2;
-      transition: height 0.3s;
-      opacity: 0.75;
-      border-radius: 5px;
-      z-index: -10;
-    }
+.row {
+display: flex;
+}
+.column {
+flex: 50%;
+padding: 0px 20px;
+}
+.column-dropdowns {
+margin: auto;
+display: flex;
+justify-content: left;
+align-items: left;
+}
 
-    #solution {
-      position: absolute;
-      bottom: 24.1%;
-      left: 50%; transform: translateX(-50%);
-      width: 12.5%;
-      height: 0;
-      background: #abdcf2;
-      transition: height 0.3s ease-in-out;
-      opacity: 0.75;
-      z-index: -10;
-    }
-    .solution::after {
-      content: "";
-      position: absolute;
-      top: 0px;
-      right: 50%; transform: translateX(50%);
-      width: 100%;
-      height: 5px;
-      background: #def1fa; /* Subtle meniscus highlight */
-      border-radius: 0% 0% 50% 50%; /* Round only the bottom corners */
-      z-index: 0;
-    }
-    
-    
-  </style>
+.button-container button {
+margin: 20px;
+padding: 10px 20px;
+font-size: 16px;
+cursor: pointer;
+}
+
+#glassware-container {
+margin: 20px;
+position: relative;
+display: inline-block;
+}
+
+#total-mass {
+position: absolute;
+bottom: 2.5%; /* Adjust as needed */
+left: 50%; /* Adjust as needed */
+transform: translateX(-50%);
+border-radius: 5px;
+font-size: 24px;
+font-weight: bold;
+z-index: 0;
+}
+
+#cylinder {
+display: absolute;
+width: 400px;
+z-index: 5;
+}
+
+#solution {
+position: absolute;
+bottom: 23.4%;
+left: 50%; transform: translateX(-50%);
+width: 13%;
+height: 0;
+background: #abdcf2;
+transition: height 0.3s ease-in-out;
+opacity: 0.75;
+z-index: -10;
+}
+.solution::after {
+content: "";
+position: absolute;
+top: 0px;
+right: 50%; transform: translateX(50%);
+width: 100%;
+height: 5px;
+background: #def1fa; /* Subtle meniscus highlight */
+border-radius: 0% 0% 50% 50%; /* Round only the bottom corners */
+z-index: 0;
+}
+</style>
 </head>
 <body>
-<div id="instruction-message">
-<h2 style="font-size: 24pt; color: #ff2e37; text-align: left;">
-<strong>Simulation Instructions</strong>
-</h2>
-<p>
-Use this lab simulation to follow along with your Illustrated Experimental Plan for the FOS Lab Period 1 Experiment.
-  <ol>
-  <li>To begin, use the <strong>ADD</strong> buttons below the beaker sitting on a balance to add sodium chloride and water into the beaker, preparing your sodium chloride solution.</li>
-  <li>Once you have your sodium chloride solution prepared, use the <strong>ADD</strong> buttons below the graduated cylinder sitting on a balance to add portions of your prepared solution into the cylinder.</li>
-  </ol>
-</p>
-<p>
-You can restart the simulation at any time by clicking on the <strong>Reset All Controls</strong> button.
-</p>
-</div>
-<hr>
-  <div class="reset-button-container" style="text-align: left;">
-      <button onclick="reset()">Reset All Controls</button>
-  </div>
-  
+<div id="dropdown-container">
 <div class="row">
-  <div class="column">
-    <!--Balance Area #1 Code-->
-    <div id="balance-area-1">
-      <div id="glassware-container">
-        <div id="liquid"></div>
-        <img id="beaker" src="https://github.com/johannalherman/131-FOS/blob/main/Beaker%20on%20Balance.png?raw=true" alt="50-mL Beaker">
-        <p id="total-mass"><span>0.000</span> g</p>
-      </div>
-    </div>
-    <div class="button-container" style="margin-bottom: 40px;">
-      <button onclick="addSodiumChloride()">Add Solid Sodium Chloride</button>
-      <button onclick="addWater()">Add D.I. Water</button>
-    </div>
-  </div>
-  
-  <div class="column">
-    <!--Balance Area #2 Code-->
-    <div id="balance-area-2">
-      <div id="glassware-container-2">
-        <div id="solution" class="solution"></div>
-        <img id="cylinder" src="https://github.com/johannalherman/131-FOS/blob/main/Graduated%20Cylinder%20on%20Balance.png?raw=true">
-        <p id="total-mass-2"><span>0.000</span> g</p>
-      </div>
-    </div>
-    <div class="button-container">
-      <button onclick="addSolution()">Add Solution</button>
-      <button onclick="removeSolution()">Remove Solution</button>
-    </div>
-  </div>
+<div class="column-dropdowns" style="flex: 80%;">
+<label for="Selector" style="margin-right: 5px;">
+<strong>1)</strong> Select Unknown Solution ID:
+</label>
+<select id="Selector">
+<option value="" selected>Choose from Dropdown</option>
+<option value="Sol01">CB-01</option>
+<option value="Sol02">CB-02</option>
+<option value="Sol03">CB-03</option>
+<option value="Sol04">CB-04</option>
+<option value="Sol05">CB-05</option>
+<option value="Sol06">CB-06</option>
+<option value="Sol07">CB-07</option>
+<option value="Sol08">CB-08</option>
+<option value="Sol09">CB-09</option>
+<option value="Sol10">CB-10</option>
+</select>
 </div>
-<hr>
-<p style="color: #ff2e37; text-align: left;"><em>This simulation was designed for use on a laptop or desktop computer. This simulation may not function properly on a mobile device.</em></p>
- 
-  <script>
-let amount = 0;
-let totalMass1 = 0;
-let saltMass = 0;
-let liquidHeight1 = 0;
-let lim1 = 180;
-let totalMass2 = 0;
-let solVolume = 0;
-let liquidHeight2= 0;
-let cylinderVolume = 380;  // Total px hieght volume of the cylinder
-let px_mL = 35.9; // number of px in mL in cylinder image
-let increment = 0; // Adjust this value for how much water should be added to cylinder per click
+<div class="column-dropdowns" style="flex: 20%;">
+<button id="resetButton" class="control-button" onclick="reset()">
+Reset All Controls
+</button>
+</div>
+</div>
+</div>
 
-const addSodiumChlorideButton = document.querySelector('button[onclick="addSodiumChloride()"]');
-const addWaterButton = document.querySelector('button[onclick="addWater()"]');
-const addSolutionButton = document.querySelector('button[onclick="addSolution()"]');
-const removeSolutionButton = document.querySelector('button[onclick="removeSolution()"]');
+<hr />
+<!--Balance Area #2 Code-->
+<div class="button-container">
+<button id="dropsButton" type="button" disabled>Add Drops</button>
+<button id="pourButton" type="button" disabled>Pour In</button>
+</div>
+<div id="glassware-container">
+<div id="solution" class="solution"></div>
+<img
+id="cylinder"
+src="https://github.com/johannalherman/133-CB/blob/main/Graduated%20Cylinder%20on%20Balance.png?raw=true"
+/>
+<p id="total-mass"><span>0.000</span> g</p>
+</div>
+<div class="button-container">
+<button id="tareButton" class="control-button">Tare Balance</button>
+<button id="removeSolution" class="control-button">Pour Solution Out</button>
+</div>
 
+<hr />
+<div style="font: 16px Arial, sans-serif; color: #8000CF; text-align: left;">
+<p>
+<em
+>This simulation was designed for use on a laptop or desktop computer.
+Functions may not operate on a mobile device.</em
+>
+</p>
+<p>
+<em
+>Created by Johanna L. Herman, Ph.D. for use in CHEM 133 at the University
+of Delaware.</em
+>
+</p>
+</div>
 
+<script>
 function getRandomAmount(min, max) {
-  return Math.random() * (max - min) + min;
+return Math.random() * (max - min) + min;
 }
+
+let densitySolution = 1;
+let cylinderMass = getRandomAmount(25, 30);
+let totalMass = cylinderMass;
+let tareOffset = 0;
+let solVolume = 0;
+let cylinderVolume = 380; // Total px hieght volume of the cylinder
+let px_scalor = 36.35; // number of px in mL in cylinder image
+
+const Densities = {
+Sol01: { D: 0.67 }, // Gasoline
+Sol02: { D: 0.82 }, //Kerosene
+Sol03: { D: 1.44 }, //Honey
+Sol04: { D: 1.48 }, //Corn Syrup
+Sol05: { D: 1.33 }, //Maple Syrup
+Sol06: { D: 0.67 }, // Gasoline
+Sol07: { D: 0.82 }, //Kerosene
+Sol08: { D: 1.44 }, //Honey
+Sol09: { D: 1.48 }, //Corn Syrup
+Sol10: { D: 1.33 }, //Maple Syrup
+};
 
 function reset() {
-  totalMass1 = 0;
-  saltMass = 0
-  liquidHeight1 = 0;
-  totalMass2 = 0;
-  solVolume = 0;
-  updateMassDisplay1();
-  updateMassDisplay2();
-  document.getElementById('liquid').style.height = 0 + 'px';
-  document.getElementById('solution').style.height = 0 + 'px';
-  enableButtons1(); // Enable buttons when resetting
-  checkAddSolutionButton();
-  }
-    
-function addSodiumChloride() {
-  amount = getRandomAmount(0.10, 0.30);
-  saltMass += amount; // amounts = generic grams
-  totalMass1 += amount;
-  updateMassDisplay1();
-  increaseLiquidLevel1(amount);
-  checkAddSolutionButton();
+const SolutionSelector = document.getElementById("Selector");
+SolutionSelector.value = "";
+disableButtons();
+
+solVolume = 0;
+totalMass = cylinderMass;
+tareOffset = 0;
+updateMassDisplay();
+document.getElementById("solution").style.height = 0 + "px";
 }
 
-function addWater() {
-  amount = getRandomAmount(2,5);
-  totalMass1 += amount;
-  updateMassDisplay1();
-  increaseLiquidLevel1(amount);
-  checkAddSolutionButton();
-}
+document
+.getElementById("Selector")
+.addEventListener("change", function (event) {
+currentSolution = event.target.value;
+densitySolution = Densities[currentSolution].D;
+enableButtons();
+});
 
-function checkAddSolutionButton() {
-    if (liquidHeight1 < 75) { // ensures at least 15 mL of solution has been prepared
-      addSolutionButton.disabled = true;
-    } else {
-      addSolutionButton.disabled = false;
-    }
-}
+document.getElementById("dropsButton").addEventListener("click", () => {
+addSolution("drops");
+});
+document.getElementById("pourButton").addEventListener("click", () => {
+addSolution("pour");
+});
+document.getElementById("removeSolution").addEventListener("click", () => {
+removeSolution();
+});
+document.getElementById("tareButton").addEventListener("click", () => {
+tareOffset = totalMass;
+updateMassDisplay();
+});
 
-function increaseLiquidLevel1(px_increase) {
-  liquidHeight1 += px_increase * 5;
-  if (liquidHeight1 > lim1) liquidHeight1 = lim1; // Prevent liquid from going above px limit
-  document.getElementById('liquid').style.height = liquidHeight1 + 'px';
-  
-  if (liquidHeight1 >= lim1) disableButtons1(); // Disable buttons when liquid height reaches 200
+function addSolution(size) {
+if (size === "drops") {
+amount = 0.1;
+} else {
+amount = getRandomAmount(3, 4.5);
 }
-
-function addSolution() {
-  amount = getRandomAmount(0.25,0.75);
-  solVolume = Math.min(cylinderVolume/px_mL, solVolume + amount);
-  
-  totalMass2 = ((0.00871*((saltMass/totalMass1)*100)) + 0.97303) * solVolume; // amount = volumne (mL) in grad. cylinder
-  updateMassDisplay2();
-  disableButtons1();
-  increaseLiquidLevel2();  
-  increaseLiquidLevel1(-amount);
-  document.querySelector('#total-mass span').textContent = "- - - - . - - - ";
+solVolume = Math.min(cylinderVolume / px_scalor, solVolume + amount);
+massSolution = solVolume * densitySolution;
+totalMass = massSolution + cylinderMass;
+updateMassDisplay();
+increaseLiquidLevel();
 }
 
 function removeSolution() {
-	amount = 1;
-	if (amount >= solVolume) {  
-  	amount = solVolume;
-  }
-  
-  solVolume = Math.max(0, solVolume - amount);
-  
-  totalMass2 = ((0.00871*((saltMass/totalMass1)*100)) + 0.97303) * solVolume; // amount = volumne (mL) in grad. cylinder
-  updateMassDisplay2();
-  increaseLiquidLevel2();
-  increaseLiquidLevel1(amount);
-  enableButtons2();
+amount = getRandomAmount(1.5, 2.5);
+if (amount >= solVolume) {
+amount = solVolume;
+}
+solVolume = Math.max(0, solVolume - amount);
+massSolution = solVolume * densitySolution;
+totalMass = massSolution + cylinderMass;
+updateMassDisplay();
+increaseLiquidLevel();
 }
 
-function increaseLiquidLevel2() {
-  if (solVolume > 0) {
-    document.getElementById('solution').style.height = ((solVolume * px_mL)+4) + 'px';
-  } else {
-  document.getElementById('solution').style.height = (solVolume * px_mL) + 'px';
-  }
+function increaseLiquidLevel() {
+if (solVolume > 0) {
+document.getElementById("solution").style.height =
+solVolume * px_scalor + 4 + "px";
+} else {
+document.getElementById("solution").style.height =
+solVolume * px_scalor + "px";
+}
+}
+function updateMassDisplay() {
+document.querySelector("#total-mass span").textContent = (
+totalMass - tareOffset
+).toFixed(3);
 }
 
-function updateMassDisplay1() {
-  document.querySelector('#total-mass span').textContent = totalMass1.toFixed(3);
+const dropsButtonBtn = document.getElementById("dropsButton");
+const pourButtonBtn = document.getElementById("pourButton");
+function enableButtons() {
+dropsButtonBtn.disabled = false;
+pourButtonBtn.disabled = false;
+}
+function disableButtons() {
+dropsButtonBtn.disabled = true;
+pourButtonBtn.disabled = true;
 }
 
-function updateMassDisplay2(solVoume) {
-  document.querySelector('#total-mass-2 span').textContent = totalMass2.toFixed(3);
-}
-
-function disableButtons1() {
-  addSodiumChlorideButton.disabled = true;
-  addWaterButton.disabled = true;
-}
-
-function enableButtons1() {
-  addSodiumChlorideButton.disabled = false;
-  addWaterButton.disabled = false;
-}
-
-function disableButtons2() {
-  addSolutionButton.disabled = true;
-}
-
-function enableButtons2() {
-  addSolutionButton.disabled = false;
-}
-
-checkAddSolutionButton();
-
-  </script>
+</script>
 </body>
 </html>
