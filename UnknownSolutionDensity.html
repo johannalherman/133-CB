@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHEM 133 CB - Unknown Solution Density Simulation</title>
     <style>
-      body {
+body {
   max-width: 650px;
   margin: auto;
   font: 18px Arial, sans-serif;
@@ -72,6 +72,17 @@ font-size: 18px;
   border: 2px solid black;
 }
 
+.button-float-1 button {
+  position: absolute;
+  bottom: 45px;
+  left: 77px;
+  width: 31px;
+  height: 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
 #glassware-container {
   margin: 20px;
   position: relative;
@@ -81,7 +92,7 @@ font-size: 18px;
 #total-mass {
   position: absolute;
   bottom: 2.5%; /* Adjust as needed */
-  left: 50%; /* Adjust as needed */
+  left: 62%; /* Adjust as needed */
   transform: translateX(-50%);
   border-radius: 5px;
   font-size: 24px;
@@ -117,10 +128,12 @@ font-size: 18px;
   border-radius: 0% 0% 50% 50%; /* Round only the bottom corners */
   z-index: 0;
 }
+
+      
     </style>
   </head>
   <body>
-    <div id="dropdown-container">
+<div id="dropdown-container">
   <div class="row">
     <div class="column-dropdowns" style="flex: 80%;">
       <label for="Selector" style="margin-right: 5px;">
@@ -159,29 +172,33 @@ font-size: 18px;
   <div id="solution" class="solution"></div>
   <img
     id="cylinder"
-    src="https://github.com/johannalherman/133-CB/blob/main/Graduated%20Cylinder%20on%20Balance.png?raw=true"
+    src="https://github.com/johannalherman/133-CB/blob/main/Grad%20Cyld%20on%20Balnce%20w:%20tare.png?raw=true"
   />
   <p id="total-mass"><span>0.000</span> g</p>
-</div>
-<div class="button-container">
-  <button id="tareButton" >Tare Balance</button>
+  <div class="button-float-1">
+    <button id="tareButton"></button>
+  </div>
 </div>
 
 <hr />
 <div style="font: 16px Arial, sans-serif; color: #8000CF; text-align: left;">
-<p>
-  <em
-    >This simulation was designed for use on a laptop or desktop computer.
-    Functions may not operate on a mobile device.</em
-  >
-</p>
-<p>
-  <em
-    >Created by Johanna L. Herman, Ph.D. for use in CHEM 133 at the University
-    of Delaware.</em
-  >
-</p>
+  <p>
+    <em
+      >This simulation was designed for use on a laptop or desktop computer.
+      Functions may not operate on a mobile device.</em
+    >
+  </p>
+  <p>
+    <em
+      >Created by Johanna L. Herman, Ph.D. for use in CHEM 133 at the University
+      of Delaware.</em
+    >
+  </p>
 </div>
+
+
+    
+    
   <script>
     function getRandomAmount(min, max) {
   return Math.random() * (max - min) + min;
