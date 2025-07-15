@@ -212,6 +212,7 @@ function reset() {
   const SolutionSelector = document.getElementById("Selector");
   SolutionSelector.value = "";
   disableButtons();
+  dropdown.disabled = false;
 
   solVolume = 0;
   totalMass = cylinderMass;
@@ -220,14 +221,15 @@ function reset() {
   document.getElementById("solution").style.height = 0 + "px";
 }
 
+const dropdown = document.getElementById('Selector');
 document
   .getElementById("Selector")
   .addEventListener("change", function (event) {
     currentSolution = event.target.value;
     densitySolution = Densities[currentSolution].D;
     enableButtons();
+    dropdown.disabled = true;
   });
-
 document.getElementById("dropsButton").addEventListener("click", () => {
   addSolution("drops");
 });
@@ -297,7 +299,6 @@ function disableButtons() {
 }
 
 updateMassDisplay();
-
   </script>
   </body>
 </html>
