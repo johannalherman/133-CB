@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHEM 133 CB - Unknown Solution Density Simulation</title>
     <style>
-      body {
+body {
   width: 800px;
   margin: auto;
   font:
@@ -80,7 +80,7 @@ hr {
   position: absolute;
   left: 65%;
   top: 0%;
-  width: 240px;
+  width: 250px;
   z-index: 10;
 }
 .button-container-2 button {
@@ -169,7 +169,7 @@ hr {
 }
 #referenceTableWrapper {
   position: absolute;
-  top: 80px;
+  top: 60px;
   left: 50%;
   transform: translateX(-50%);
   background: white;
@@ -180,7 +180,7 @@ hr {
 }
 table {
   border-collapse: collapse;
-  width: 250px;
+  width: 260px;
   font:
     16px Arial,
     sans-serif;
@@ -245,12 +245,24 @@ td {
         </thead>
         <tbody>
           <tr>
+            <td>Canola Oil</td>
+            <td>0.915</td>
+          </tr>
+          <tr>
+            <td>Coconut Oil</td>
+            <td>0.930</td>
+          </tr>
+          <tr>
             <td>Gasoline</td>
-            <td>0.67</td>
+            <td>0.737</td>
+          </tr>
+          <tr>
+            <td>Grape Seed Oil</td>
+            <td>0.923</td>
           </tr>
           <tr>
             <td>Kerosene</td>
-            <td>0.82</td>
+            <td>0.820</td>
           </tr>
           <tr>
             <td>Honey</td>
@@ -263,6 +275,14 @@ td {
           <tr>
             <td>Maple Syrup</td>
             <td>1.33</td>
+          </tr>
+          <tr>
+            <td>Whole Milk</td>
+            <td>1.05</td>
+          </tr>
+          <tr>
+            <td>Water</td>
+            <td>1.00</td>
           </tr>
         </tbody>
       </table>
@@ -308,7 +328,7 @@ td {
     
     
   <script>
-    const button = document.getElementById("toggleButton");
+const button = document.getElementById("toggleButton");
 const tableWrapper = document.getElementById("referenceTableWrapper");
 
 button.addEventListener("click", () => {
@@ -332,16 +352,16 @@ let cylinderVolume = 380; // Total px hieght volume of the cylinder
 let px_scalor = 36.35; // number of px in mL in cylinder image
 
 const Densities = {
-  Sol01: { D: 0.67 }, //Gasoline
-  Sol02: { D: 0.82 }, //Kerosene
-  Sol03: { D: 1.44 }, //Honey
-  Sol04: { D: 1.48 }, //Corn Syrup
+  Sol01: { D: 0.737 }, //Gasoline
+  Sol02: { D: 0.820 }, //Kerosene
+  Sol03: { D: 1.00 }, //Water
+  Sol04: { D: 0.915 }, //Canola Oil
   Sol05: { D: 1.33 }, //Maple Syrup
-  Sol06: { D: 0.67 }, //Gasoline
-  Sol07: { D: 0.82 }, //Kerosene
-  Sol08: { D: 1.44 }, //Honey
-  Sol09: { D: 1.48 }, //Corn Syrup
-  Sol10: { D: 1.33 }, //Maple Syrup
+  Sol06: { D: 1.44 }, //Honey
+  Sol07: { D: 1.48 }, //Corn Syrup
+  Sol08: { D: 1.05 }, //Milk
+  Sol09: { D: 0.923 }, //Grape Seed Oil
+  Sol10: { D: 0.930 }, //Coconut Oil
 };
 
 function reset() {
@@ -384,7 +404,7 @@ function addSolution(size) {
   if (size === "drops") {
     amount = 0.1;
   } else {
-    amount = 5; //getRandomAmount(3, 4.5);
+    amount = getRandomAmount(3, 4.5);
   }
   solVolume = Math.min(cylinderVolume / px_scalor, solVolume + amount);
   massSolution = solVolume * densitySolution;
