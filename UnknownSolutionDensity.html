@@ -8,29 +8,31 @@
 body {
   max-width: 650px;
   margin: auto;
-  font: 18px Arial, sans-serif;
+  font:
+    18px Arial,
+    sans-serif;
   text-align: center;
   padding: 20px;
 }
-    
+
 hr {
-  border: 2px solid #8000CF;
+  border: 2px solid #8000cf;
   border-radius: 5px;
 }
 
 #dropdown-container {
-margin: 20px auto 20px auto;
-text-align: left;
-width: 600px;
-gap: 10px;
-padding: 10px 30px;
-background-color: #eed7fe;
-border: 2px solid black;
-border-radius: 8px;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px auto 20px auto;
+  text-align: left;
+  width: 600px;
+  gap: 10px;
+  padding: 10px 30px;
+  background-color: #eed7fe;
+  border: 2px solid black;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 #Selector {
-font-size: 18px;
+  font-size: 18px;
   cursor: pointer;
 }
 
@@ -38,7 +40,7 @@ font-size: 18px;
   font-size: 18px;
   padding: 10px 20px;
   background-image: linear-gradient(#d89fff, #f3e3ff 50%, #d89fff);
-  border: 2px solid #8000CF;
+  border: 2px solid #8000cf;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -61,7 +63,7 @@ font-size: 18px;
 }
 
 .button-container button {
-  border: 2px solid #8000CF;
+  border: 2px solid #8000cf;
   border-radius: 5px;
   margin: 20px 10px 20px 10px;
   padding: 10px 20px;
@@ -109,7 +111,8 @@ font-size: 18px;
 #solution {
   position: absolute;
   bottom: 23.4%;
-  left: 50%; transform: translateX(-50%);
+  left: 50%;
+  transform: translateX(-50%);
   width: 13%;
   height: 0;
   background: #abdcf2;
@@ -121,12 +124,47 @@ font-size: 18px;
   content: "";
   position: absolute;
   top: 0px;
-  right: 50%; transform: translateX(50%);
+  right: 50%;
+  transform: translateX(50%);
   width: 100%;
   height: 5px;
   background: #def1fa; /* Subtle meniscus highlight */
   border-radius: 0% 0% 50% 50%; /* Round only the bottom corners */
   z-index: 0;
+}
+
+button {
+  border: 2px solid #8000cf;
+  border-radius: 5px;
+  margin: 20px 10px 0px 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#referenceTableWrapper {
+  position: absolute;
+  top: 380px;
+  left: 80%;
+  transform: translateX(-50%);
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  display: none;
+}
+table {
+  border-collapse: collapse;
+  width: 250px;
+  font:
+    16px Arial,
+    sans-serif;
+}
+th,
+td {
+  border: 1px solid #8000cf;
+  padding: 5px;
+  text-align: center;
 }
 
       
@@ -135,8 +173,8 @@ font-size: 18px;
   <body>
 <div id="dropdown-container">
   <div class="row">
-    <div class="column-dropdowns" style="flex: 80%;">
-      <label for="Selector" style="margin-right: 5px;">
+    <div class="column-dropdowns" style="flex: 80%">
+      <label for="Selector" style="margin-right: 5px">
         Select Solution ID:
       </label>
       <select id="Selector">
@@ -153,7 +191,7 @@ font-size: 18px;
         <option value="Sol10">CB-10</option>
       </select>
     </div>
-    <div class="column-dropdowns" style="flex: 20%;">
+    <div class="column-dropdowns" style="flex: 20%">
       <button id="resetButton" class="control-button" onclick="reset()">
         Reset All Controls
       </button>
@@ -162,45 +200,102 @@ font-size: 18px;
 </div>
 
 <hr />
-<!--Balance Area #2 Code-->
-<div class="button-container">
-  <button id="dropsButton" type="button" disabled>Add Drops</button>
-  <button id="pourButton" type="button" disabled>Pour In</button>
-  <button id="removeSolution" type="button" disabled>Pour Out</button>
-</div>
-<div id="glassware-container">
-  <div id="solution" class="solution"></div>
-  <img
-    id="cylinder"
-    src="https://github.com/johannalherman/133-CB/blob/main/Grad%20Cyld%20on%20Balnce%20w:%20tare.png?raw=true"
-  />
-  <p id="total-mass"><span>0.000</span> g</p>
-  <div class="button-float-1">
-    <button id="tareButton"></button>
-  </div>
-</div>
 
-<hr />
-<div style="font: 16px Arial, sans-serif; color: #8000CF; text-align: left;">
-  <p>
-    <em
-      >This simulation was designed for use on a laptop or desktop computer.
-      Functions may not operate on a mobile device.</em
-    >
-  </p>
-  <p>
-    <em
-      >Created by Johanna L. Herman, Ph.D. for use in CHEM 133 at the University
-      of Delaware.</em
-    >
-  </p>
+<!--Balance Area #2 Code-->
+<div>
+  <button id="toggleButton">Open Density Table</button>
+  <div id="referenceTableWrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Solution</th>
+          <th>Density (g/mL)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gasoline</td>
+          <td>0.67</td>
+        </tr>
+        <tr>
+          <td>Kerosene</td>
+          <td>0.82</td>
+        </tr>
+        <tr>
+          <td>Honey</td>
+          <td>1.44</td>
+        </tr>
+        <tr>
+          <td>Corn Syrup</td>
+          <td>1.48</td>
+        </tr>
+        <tr>
+          <td>Maple Syrup</td>
+          <td>1.33</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="button-container">
+    <button id="dropsButton" type="button" disabled>Add Drops</button>
+    <button id="pourButton" type="button" disabled>Pour In</button>
+    <button id="removeSolution" type="button" disabled>Pour Out</button>
+  </div>
+
+  <div id="glassware-container">
+    <div id="solution" class="solution"></div>
+    <img
+      id="cylinder"
+      src="https://github.com/johannalherman/133-CB/blob/main/Grad%20Cyld%20on%20Balnce%20w:%20tare.png?raw=true"
+    />
+    <p id="total-mass"><span>0.000</span> g</p>
+    <div class="button-float-1">
+      <button id="tareButton"></button>
+    </div>
+  </div>
+
+  <hr />
+  <div
+    style="
+      font:
+        16px Arial,
+        sans-serif;
+      color: #8000cf;
+      text-align: left;
+    "
+  >
+    <p>
+      <em
+        >This simulation was designed for use on a laptop or desktop computer.
+        Functions may not operate on a mobile device.</em
+      >
+    </p>
+    <p>
+      <em
+        >Created by Johanna L. Herman, Ph.D. for use in CHEM 133 at the
+        University of Delaware.</em
+      >
+    </p>
+  </div>
 </div>
 
 
     
     
   <script>
-    function getRandomAmount(min, max) {
+const button = document.getElementById("toggleButton");
+const tableWrapper = document.getElementById("referenceTableWrapper");
+
+button.addEventListener("click", () => {
+  const isVisible = tableWrapper.style.display === "block";
+  tableWrapper.style.display = isVisible ? "none" : "block";
+  button.textContent = isVisible
+    ? "Open Density Table"
+    : "Close Density Table";
+});
+
+function getRandomAmount(min, max) {
   return Math.random() * (max - min) + min;
 }
 
@@ -238,7 +333,7 @@ function reset() {
   document.getElementById("solution").style.height = 0 + "px";
 }
 
-const dropdown = document.getElementById('Selector');
+const dropdown = document.getElementById("Selector");
 document
   .getElementById("Selector")
   .addEventListener("change", function (event) {
@@ -316,6 +411,9 @@ function disableButtons() {
 }
 
 updateMassDisplay();
+
+
+    
   </script>
   </body>
 </html>
