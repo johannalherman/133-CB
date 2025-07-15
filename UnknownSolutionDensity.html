@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHEM 133 CB - Unknown Solution Density Simulation</title>
     <style>
-body {
-  max-width: 650px;
+      body {
+  width: 800px;
   margin: auto;
   font:
     18px Arial,
@@ -23,7 +23,7 @@ hr {
 #dropdown-container {
   margin: 20px auto 20px auto;
   text-align: left;
-  width: 600px;
+  width: 700px;
   gap: 10px;
   padding: 10px 30px;
   background-color: #eed7fe;
@@ -52,32 +52,53 @@ hr {
 .row {
   display: flex;
 }
-.column {
-  padding: 0px 0px;
-}
 .column-dropdowns {
   margin: auto;
-  display: flex;
-  justify-content: left;
-  align-items: center;
 }
 
-.button-container button {
+.button-container-1 {
+  position: absolute;
+  left: 20%;
+  top: 15%;
+  width: 200px;
+  line-height: 0;
+  z-index: 10;
+}
+.button-container-1 button {
   border: 2px solid #8000cf;
   border-radius: 5px;
-  margin: 20px 10px 20px 10px;
+  margin: 5px;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
 }
-.button-container button:hover {
+.button-container-1 button:hover {
+  border: 2px solid black;
+}
+
+.button-container-2 {
+  position: absolute;
+  left: 65%;
+  top: 0%;
+  width: 240px;
+  z-index: 10;
+}
+.button-container-2 button {
+  border: 2px solid #8000cf;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.button-container-2 button:hover {
   border: 2px solid black;
 }
 
 .button-float-1 button {
   position: absolute;
-  bottom: 45px;
-  left: 77px;
+  bottom: 25.5%;
+  left: 33.25%;
   width: 31px;
   height: 20px;
   border: none;
@@ -93,8 +114,8 @@ hr {
 
 #total-mass {
   position: absolute;
-  bottom: 2.5%; /* Adjust as needed */
-  left: 62%; /* Adjust as needed */
+  bottom: 20%;
+  left: 56%;
   transform: translateX(-50%);
   border-radius: 5px;
   font-size: 24px;
@@ -110,7 +131,7 @@ hr {
 
 #solution {
   position: absolute;
-  bottom: 23.4%;
+  bottom: 37.5%;
   left: 50%;
   transform: translateX(-50%);
   width: 13%;
@@ -133,7 +154,12 @@ hr {
   z-index: 0;
 }
 
-button {
+.popup-1 {
+  position: absolute;
+  left: 65%;
+  z-index: 10;
+}
+.toggle-btn {
   border: 2px solid #8000cf;
   border-radius: 5px;
   margin: 20px 10px 0px 10px;
@@ -141,11 +167,10 @@ button {
   font-size: 16px;
   cursor: pointer;
 }
-
 #referenceTableWrapper {
   position: absolute;
-  top: 380px;
-  left: 80%;
+  top: 80px;
+  left: 50%;
   transform: translateX(-50%);
   background: white;
   border: 1px solid #ccc;
@@ -166,6 +191,7 @@ td {
   padding: 5px;
   text-align: center;
 }
+
 
       
     </style>
@@ -191,68 +217,66 @@ td {
         <option value="Sol10">CB-10</option>
       </select>
     </div>
-    <div class="column-dropdowns" style="flex: 20%">
+    <div class="column-dropdowns" style="flex: 30%">
       <button id="resetButton" class="control-button" onclick="reset()">
         Reset All Controls
       </button>
     </div>
   </div>
 </div>
-
 <hr />
 
 <!--Balance Area #2 Code-->
-<div>
-  <button id="toggleButton">Open Density Table</button>
-  <div id="referenceTableWrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>Solution</th>
-          <th>Density (g/mL)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Gasoline</td>
-          <td>0.67</td>
-        </tr>
-        <tr>
-          <td>Kerosene</td>
-          <td>0.82</td>
-        </tr>
-        <tr>
-          <td>Honey</td>
-          <td>1.44</td>
-        </tr>
-        <tr>
-          <td>Corn Syrup</td>
-          <td>1.48</td>
-        </tr>
-        <tr>
-          <td>Maple Syrup</td>
-          <td>1.33</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="button-container">
+<div id="glassware-container">
+  <div class="button-container-1">
     <button id="dropsButton" type="button" disabled>Add Drops</button>
     <button id="pourButton" type="button" disabled>Pour In</button>
     <button id="removeSolution" type="button" disabled>Pour Out</button>
   </div>
-
-  <div id="glassware-container">
-    <div id="solution" class="solution"></div>
-    <img
-      id="cylinder"
-      src="https://github.com/johannalherman/133-CB/blob/main/Grad%20Cyld%20on%20Balnce%20w:%20tare.png?raw=true"
-    />
-    <p id="total-mass"><span>0.000</span> g</p>
-    <div class="button-float-1">
-      <button id="tareButton"></button>
+  <div class="button-container-2">
+    <button id="toggleButton" class="toggle-btn">Open Density Table</button>
+    <div id="referenceTableWrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Solution</th>
+            <th>Density (g/mL)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Gasoline</td>
+            <td>0.67</td>
+          </tr>
+          <tr>
+            <td>Kerosene</td>
+            <td>0.82</td>
+          </tr>
+          <tr>
+            <td>Honey</td>
+            <td>1.44</td>
+          </tr>
+          <tr>
+            <td>Corn Syrup</td>
+            <td>1.48</td>
+          </tr>
+          <tr>
+            <td>Maple Syrup</td>
+            <td>1.33</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+
+  <div id="solution" class="solution"></div>
+  <img
+    id="cylinder"
+    src="https://github.com/johannalherman/133-CB/blob/main/Grad%20Cyld%20on%20Balnce%20w:%20tare.png?raw=true"
+  />
+  <p id="total-mass"><span>0.000</span> g</p>
+  <div class="button-float-1">
+    <button id="tareButton"></button>
   </div>
 
   <hr />
@@ -284,7 +308,7 @@ td {
     
     
   <script>
-const button = document.getElementById("toggleButton");
+    const button = document.getElementById("toggleButton");
 const tableWrapper = document.getElementById("referenceTableWrapper");
 
 button.addEventListener("click", () => {
@@ -360,7 +384,7 @@ function addSolution(size) {
   if (size === "drops") {
     amount = 0.1;
   } else {
-    amount = getRandomAmount(3, 4.5);
+    amount = 5; //getRandomAmount(3, 4.5);
   }
   solVolume = Math.min(cylinderVolume / px_scalor, solVolume + amount);
   massSolution = solVolume * densitySolution;
@@ -411,6 +435,7 @@ function disableButtons() {
 }
 
 updateMassDisplay();
+
 
 
     
