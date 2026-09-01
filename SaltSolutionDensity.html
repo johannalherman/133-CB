@@ -20,22 +20,6 @@ hr {
   border-radius: 5px;
 }
 
-#dropdown-container {
-  margin: 20px auto 20px auto;
-  text-align: left;
-  width: 700px;
-  gap: 10px;
-  padding: 10px 30px;
-  background-color: #eed7fe;
-  border: 2px solid black;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-#Selector {
-  font-size: 18px;
-  cursor: pointer;
-}
-
 .control-button {
   font-size: 18px;
   padding: 10px 20px;
@@ -60,11 +44,84 @@ hr {
   margin: auto;
 }
 
+
+
+#glassware-container-1 {
+  margin: 20px;
+  position: relative;
+  display: inline-block;
+}
+
+.button-container-1 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 6%;
+  width: 160px;
+  font-size: 14px;
+  font-style: italic;
+  line-height: 0;
+  z-index: 10;
+}
+.button-container-1 button {
+  border: 2px solid #8000cf;
+  border-radius: 5px;
+  margin: 2px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+.button-container-1 button:hover {
+  border: 2px solid black;
+}
+
+#balance-1 {
+  width: 100%;
+  z-index: 5;
+}
+canvas {
+  /* display: block;*/
+  margin: auto;
+  position: relative;
+  width: 0px;
+  height: 0px;
+  z-index: -10;
+}
+.button-float-1 button {
+  position: absolute;
+  top: 83%;
+  left: 19.25%;
+  width: 24px;
+  height: 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+#total-mass-1 {
+  position: absolute;
+  top: 78%;
+  left: 61%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  font-size: 22px;
+  font-weight: bold;
+  z-index: 0;
+}
+
+
+
+#glassware-container-2 {
+  margin: 20px;
+  position: relative;
+  display: inline-block;
+}
+
 .button-container-2 {
   position: absolute;
   left: 0%;
-  top: 25%;
+  top: 6%;
   width: 130px;
+  font-size: 14px;
+  font-style: italic;
   line-height: 0;
   z-index: 10;
 }
@@ -73,11 +130,39 @@ hr {
   border-radius: 5px;
   margin: 2px;
   padding: 8px 16px;
-  font-size: 14px;
   cursor: pointer;
 }
 .button-container-2 button:hover {
   border: 2px solid black;
+}
+
+#cylinder {
+  width: 100%;
+  z-index: 5;
+}
+#solution-2 {
+  position: absolute;
+  bottom: 24%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 13%;
+  height: 0px;
+  background: #abdcf2;
+  transition: height 0.3s ease-in-out;
+  opacity: 0.75;
+  z-index: -10;
+}
+#solution-2::after {
+  content: '';
+  position: absolute;
+  top: 0px;
+  right: 50%;
+  transform: translateX(50%);
+  width: 100%;
+  height: 5px;
+  background: #def1fa; /* Subtle meniscus highlight */
+  border-radius: 0% 0% 50% 50%; /* Round only the bottom corners */
+  z-index: 0;
 }
 
 .button-float-2 button {
@@ -90,13 +175,6 @@ hr {
   background: none;
   cursor: pointer;
 }
-
-#glassware-container-2 {
-  margin: 20px;
-  position: relative;
-  display: inline-block;
-}
-
 #total-mass-2 {
   position: absolute;
   bottom: 1.4%;
@@ -108,35 +186,7 @@ hr {
   z-index: 0;
 }
 
-#cylinder {
-  width: 100%;
-  z-index: 5;
-}
 
-#solution {
-  position: absolute;
-  bottom: 24%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 13%;
-  height: 0px;
-  background: #abdcf2;
-  transition: height 0.3s ease-in-out;
-  opacity: 0.75;
-  z-index: -10;
-}
-#solution::after {
-  content: "";
-  position: absolute;
-  top: 0px;
-  right: 50%;
-  transform: translateX(50%);
-  width: 100%;
-  height: 5px;
-  background: #def1fa; /* Subtle meniscus highlight */
-  border-radius: 0% 0% 50% 50%; /* Round only the bottom corners */
-  z-index: 0;
-}
 
 
 
@@ -144,64 +194,57 @@ hr {
     </style>
   </head>
   <body>
-<div id="dropdown-container">
-  <div class="row">
-    <div class="column-dropdowns" style="flex: 0 0 70%">
-      <label for="Selector" style="margin-right: 5px">
-        Select Salt:
-      </label>
-      <select id="Selector">
-        <option value="" selected>Choose from Dropdown</option>
-        <option value="Sol01">BT-10</option>
-        <option value="Sol02">BT-11</option>
-        <option value="Sol03">BT-12</option>
-        <option value="Sol04">BT-13</option>
-        <option value="Sol05">BT-14</option>
-        <option value="Sol06">BT-15</option>
-        <option value="Sol07">BT-16</option>
-        <option value="Sol08">BT-17</option>
-        <option value="Sol09">BT-18</option>
-        <option value="Sol10">BT-19</option>
-      </select>
-    </div>
-    <div class="column-dropdowns" style="flex: 0 0 30%">
-      <button
-        id="resetButton"
-        class="control-button"
-        type="button"
-        onclick="reset()"
-      >
-        Reset All Controls
-      </button>
-    </div>
-  </div>
+<div style="text-align: right; padding: 10px 20px;">
+<button id="resetButton" class="control-button" type="button" onclick="reset()">
+  Reset All Controls
+</button>
 </div>
 <hr />
 
 <div class="row">
   <div class="column">
     <!--Balance Area #1 Code-->
+    <div id="glassware-container-1">
+      <div class="button-container-1">
+        <p>Salt Controls</p>
+        <button id="addSmallacidBtn" type="button">Add Small Amount</button>
+        <button id="addLargeacidBtn" type="button">Add Large Amount</button>
+      </div>
+      <img
+        id="balance-1"
+        src="https://github.com/johannalherman/133-CB/blob/main/Beaker%20+%20Balnce%20with%20tare.png?raw=true"
+      />
+      <p id="total-mass-1"><span>0.000</span> g</p>
+      <div class="button-float-1">
+        <button
+          id="tareButton-1"
+          type="button"
+          aria-label="Tare Scale"
+        ></button>
+      </div>
+      <canvas id="canvas"></canvas>
+    </div>
   </div>
+
   <div class="column">
     <!--Balance Area #2 Code-->
     <div id="glassware-container-2">
       <div class="button-container-2">
+        <p>Solution Controls</p>
         <button id="dropsButton" type="button" disabled>Add Drops</button>
         <button id="pourButton" type="button" disabled>Pour In</button>
         <button id="removeSolution" type="button" disabled>Pour Out</button>
       </div>
 
-      <div id="solution"></div>
+      <div id="solution-2"></div>
       <img
         id="cylinder"
-        src="https://github.com/johannalherman/133-CB/blob/main/Grad%20Cyld%20on%20Balnce%20w:%20tare.png?raw=true"
+        src="https://github.com/johannalherman/133-CB/blob/main/Grad%20Cyld%20+%20Balnce%20with%20tare.png?raw=true"
         alt="Graduated cylinder on balance"
       />
       <p id="total-mass-2"><span>0.000</span> g</p>
       <div class="button-float-2">
-        <button id="tareButton" type="button" aria-label="Tare Scale">
-          
-        </button>
+        <button id="tareButton" type="button" aria-label="Tare Scale"></button>
       </div>
     </div>
   </div>
@@ -210,12 +253,12 @@ hr {
 <hr />
 <div
   style="
-      font:
-        16px Arial,
-        sans-serif;
-      color: #8000cf;
-      text-align: left;
-    "
+    font:
+      16px Arial,
+      sans-serif;
+    color: #8000cf;
+    text-align: left;
+  "
 >
   <p>
     <em
@@ -230,6 +273,7 @@ hr {
     >
   </p>
 </div>
+
 
 
 
@@ -249,20 +293,7 @@ let solVolume_2 = 0;
 let cylinderVolume = 380; // Total px height volume of the cylinder
 let px_scalor_2 = 29.047902121796465; // number of px in mL in cylinder image
 
-const Densities = {
-  Sol01: { D: 0.9978 },
-  Sol02: { D: 1.002 },
-  Sol03: { D: 1.0061 },
-  Sol04: { D: 1.0039 },
-  Sol05: { D: 1.0048 },
-  Sol06: { D: 0.9972 },
-  Sol07: { D: 1.0001 },
-  Sol08: { D: 1.0057 },
-  Sol09: { D: 1.002 },
-  Sol10: { D: 1.0034 },
-};
 
-const dropdown = document.getElementById('Selector');
 const dropsButtonBtn = document.getElementById('dropsButton');
 const pourButtonBtn = document.getElementById('pourButton');
 const removeBtn = document.getElementById('removeSolution');
@@ -280,27 +311,15 @@ function disableButtons() {
 }
 
 function reset() {
-  const SolutionSelector = document.getElementById('Selector');
-  SolutionSelector.value = '';
   disableButtons();
-  dropdown.disabled = false;
-
   solVolume_2 = 0;
   cylinderMass = getRandomAmount(25, 30);
   totalMass_2 = cylinderMass;
   tareOffset_2 = 0;
   updateMassDisplay_2();
-  document.getElementById('solution').style.height = '0px';
+  document.getElementById('solution-2').style.height = '0px';
 }
 
-dropdown.addEventListener('change', function (event) {
-  const currentSolution = event.target.value;
-  if (!currentSolution || !Densities[currentSolution]) return;
-
-  densitySolution = Densities[currentSolution].D;
-  enableButtons();
-  dropdown.disabled = true;
-});
 
 dropsButtonBtn.addEventListener('click', () => {
   addSolution_2('drops');
@@ -343,10 +362,10 @@ function removeSolution_2() {
 
 function increaseLiquidLevel_2() {
   if (solVolume_2 > 0) {
-    document.getElementById('solution').style.height =
+    document.getElementById('solution-2').style.height =
       solVolume_2 * px_scalor_2 + 4 + 'px';
   } else {
-    document.getElementById('solution').style.height =
+    document.getElementById('solution-2').style.height =
       solVolume_2 * px_scalor_2 + 'px';
   }
 }
