@@ -52,78 +52,80 @@ hr {
 .row {
   display: flex;
 }
+.column {
+  flex: 50%;
+  padding: 0px 20px;
+}
 .column-dropdowns {
   margin: auto;
 }
 
-.button-container-1 {
+.button-container-2 {
   position: absolute;
-  left: 20%;
-  top: 15%;
-  width: 200px;
+  left: 0%;
+  top: 25%;
+  width: 130px;
   line-height: 0;
   z-index: 10;
 }
-.button-container-1 button {
+.button-container-2 button {
   border: 2px solid #8000cf;
   border-radius: 5px;
-  margin: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
+  margin: 2px;
+  padding: 8px 16px;
+  font-size: 14px;
   cursor: pointer;
 }
-.button-container-1 button:hover {
+.button-container-2 button:hover {
   border: 2px solid black;
 }
 
-
-.button-float-1 button {
+.button-float-2 button {
   position: absolute;
-  bottom: 25.5%;
-  left: 33.25%;
-  width: 31px;
-  height: 20px;
+  bottom: 8.9%;
+  left: 19.25%;
+  width: 24px;
+  height: 16px;
   border: none;
   background: none;
   cursor: pointer;
 }
 
-#glassware-container {
+#glassware-container-2 {
   margin: 20px;
   position: relative;
   display: inline-block;
 }
 
-#total-mass {
+#total-mass-2 {
   position: absolute;
-  bottom: 20%;
-  left: 56%;
+  bottom: 1.4%;
+  left: 61%;
   transform: translateX(-50%);
   border-radius: 5px;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
   z-index: 0;
 }
 
 #cylinder {
-  display: absolute;
-  width: 400px;
+  width: 100%;
   z-index: 5;
 }
 
 #solution {
   position: absolute;
-  bottom: 37.5%;
+  bottom: 24%;
   left: 50%;
   transform: translateX(-50%);
-  width: 6.8%;
-  height: 0;
+  width: 13%;
+  height: 0px;
   background: #abdcf2;
   transition: height 0.3s ease-in-out;
   opacity: 0.75;
   z-index: -10;
 }
-.solution::after {
+#solution::after {
   content: "";
   position: absolute;
   top: 0px;
@@ -136,43 +138,6 @@ hr {
   z-index: 0;
 }
 
-.popup-1 {
-  position: absolute;
-  left: 65%;
-  z-index: 10;
-}
-.toggle-btn {
-  border: 2px solid #8000cf;
-  border-radius: 5px;
-  margin: 20px 10px 0px 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
-#referenceTableWrapper {
-  position: absolute;
-  top: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: white;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 100;
-  display: none;
-}
-table {
-  border-collapse: collapse;
-  width: 260px;
-  font:
-    16px Arial,
-    sans-serif;
-}
-th,
-td {
-  border: 1px solid #8000cf;
-  padding: 5px;
-  text-align: center;
-}
 
 
       
@@ -181,7 +146,7 @@ td {
   <body>
 <div id="dropdown-container">
   <div class="row">
-    <div class="column-dropdowns" style="flex: 80%">
+    <div class="column-dropdowns" style="flex: 0 0 70%">
       <label for="Selector" style="margin-right: 5px">
         Select Solution ID:
       </label>
@@ -199,8 +164,13 @@ td {
         <option value="Sol10">BT-19</option>
       </select>
     </div>
-    <div class="column-dropdowns" style="flex: 30%">
-      <button id="resetButton" class="control-button" onclick="reset()">
+    <div class="column-dropdowns" style="flex: 0 0 30%">
+      <button
+        id="resetButton"
+        class="control-button"
+        type="button"
+        onclick="reset()"
+      >
         Reset All Controls
       </button>
     </div>
@@ -208,171 +178,186 @@ td {
 </div>
 <hr />
 
-<!--Balance Area #2 Code-->
-<div id="glassware-container">
-  <div class="button-container-1">
-    <button id="dropsButton" type="button" disabled>Add Drops</button>
-    <button id="pourButton" type="button" disabled>Pour In</button>
-    <button id="removeSolution" type="button" disabled>Pour Out</button>
+<div class="row">
+  <div class="column">
+    <!--Balance Area #1 Code-->
   </div>
-  
+  <div class="column">
+    <!--Balance Area #2 Code-->
+    <div id="glassware-container-2">
+      <div class="button-container-2">
+        <button id="dropsButton" type="button" disabled>Add Drops</button>
+        <button id="pourButton" type="button" disabled>Pour In</button>
+        <button id="removeSolution" type="button" disabled>Pour Out</button>
+      </div>
 
-  <div id="solution" class="solution"></div>
-  <img
-    id="cylinder"
-    src="https://github.com/johannalherman/133-CB/blob/main/Grad%20Cyld%20on%20Balnce%20w:%20tare.png?raw=true"
-  />
-  <p id="total-mass"><span>0.000</span> g</p>
-  <div class="button-float-1">
-    <button id="tareButton"></button>
+      <div id="solution"></div>
+      <img
+        id="cylinder"
+        src="https://github.com/johannalherman/133-CB/blob/main/Grad%20Cyld%20on%20Balnce%20w:%20tare.png?raw=true"
+        alt="Graduated cylinder on balance"
+      />
+      <p id="total-mass-2"><span>0.000</span> g</p>
+      <div class="button-float-2">
+        <button id="tareButton" type="button" aria-label="Tare Scale">
+          
+        </button>
+      </div>
+    </div>
   </div>
+</div>
 
-  <hr />
-  <div
-    style="
+<hr />
+<div
+  style="
       font:
         16px Arial,
         sans-serif;
       color: #8000cf;
       text-align: left;
     "
-  >
-    <p>
-      <em
-        >This simulation was designed for use on a laptop or desktop computer.
-        Functions may not operate on a mobile device.</em
-      >
-    </p>
-    <p>
-      <em
-        >Created by Johanna L. Herman, Ph.D. for use in CHEM 133 at the
-        University of Delaware.</em
-      >
-    </p>
-  </div>
+>
+  <p>
+    <em
+      >This simulation was designed for use on a laptop or desktop computer.
+      Functions may not operate on a mobile device.</em
+    >
+  </p>
+  <p>
+    <em
+      >Created by Johanna L. Herman, Ph.D. for use in CHEM 133 at the University
+      of Delaware.</em
+    >
+  </p>
 </div>
+
 
 
     
     
   <script>
-
 function getRandomAmount(min, max) {
   return Math.random() * (max - min) + min;
 }
 
 let densitySolution = 1;
 let cylinderMass = getRandomAmount(25, 30);
-let totalMass = cylinderMass;
-let tareOffset = 0;
-let solVolume = 0;
-let cylinderVolume = 380; // Total px hieght volume of the cylinder
-let px_scalor = 36.252343292869234; // number of px in mL in cylinder image
+let totalMass_2 = cylinderMass;
+let massSolution_2 = 0;
+let tareOffset_2 = 0;
+let solVolume_2 = 0;
+let cylinderVolume = 380; // Total px height volume of the cylinder
+let px_scalor_2 = 29.047902121796465; // number of px in mL in cylinder image
 
 const Densities = {
-  Sol01: { D: 0.9978 }, 
-  Sol02: { D: 1.0020 }, 
-  Sol03: { D: 1.0061 }, 
-  Sol04: { D: 1.0039 }, 
-  Sol05: { D: 1.0048 }, 
-  Sol06: { D: 0.9972 }, 
-  Sol07: { D: 1.0001 }, 
-  Sol08: { D: 1.0057 }, 
-  Sol09: { D: 1.0020 }, 
-  Sol10: { D: 1.0034 }, 
+  Sol01: { D: 0.9978 },
+  Sol02: { D: 1.002 },
+  Sol03: { D: 1.0061 },
+  Sol04: { D: 1.0039 },
+  Sol05: { D: 1.0048 },
+  Sol06: { D: 0.9972 },
+  Sol07: { D: 1.0001 },
+  Sol08: { D: 1.0057 },
+  Sol09: { D: 1.002 },
+  Sol10: { D: 1.0034 },
 };
 
-function reset() {
-  const SolutionSelector = document.getElementById("Selector");
-  SolutionSelector.value = "";
-  disableButtons();
-  dropdown.disabled = false;
+const dropdown = document.getElementById('Selector');
+const dropsButtonBtn = document.getElementById('dropsButton');
+const pourButtonBtn = document.getElementById('pourButton');
+const removeBtn = document.getElementById('removeSolution');
 
-  solVolume = 0;
-  totalMass = cylinderMass;
-  tareOffset = 0;
-  updateMassDisplay();
-  document.getElementById("solution").style.height = 0 + "px";
-}
-
-const dropdown = document.getElementById("Selector");
-document
-  .getElementById("Selector")
-  .addEventListener("change", function (event) {
-    currentSolution = event.target.value;
-    densitySolution = Densities[currentSolution].D;
-    enableButtons();
-    dropdown.disabled = true;
-  });
-document.getElementById("dropsButton").addEventListener("click", () => {
-  addSolution("drops");
-});
-document.getElementById("pourButton").addEventListener("click", () => {
-  addSolution("pour");
-});
-document.getElementById("removeSolution").addEventListener("click", () => {
-  removeSolution();
-});
-document.getElementById("tareButton").addEventListener("click", () => {
-  tareOffset = totalMass;
-  updateMassDisplay();
-});
-
-function addSolution(size) {
-  if (size === "drops") {
-    amount = 0.05;
-  } else {
-    amount = getRandomAmount(2, 3);
-  }
-  solVolume = Math.min(cylinderVolume / px_scalor, solVolume + amount);
-  massSolution = solVolume * densitySolution;
-  totalMass = massSolution + cylinderMass;
-  updateMassDisplay();
-  increaseLiquidLevel();
-}
-
-function removeSolution() {
-  amount = getRandomAmount(1.5, 2.5);
-  if (amount >= solVolume) {
-    amount = solVolume;
-  }
-  solVolume = Math.max(0, solVolume - amount);
-  massSolution = solVolume * densitySolution;
-  totalMass = massSolution + cylinderMass;
-  updateMassDisplay();
-  increaseLiquidLevel();
-}
-
-function increaseLiquidLevel() {
-  if (solVolume > 0) {
-    document.getElementById("solution").style.height =
-      solVolume * px_scalor + 4 + "px";
-  } else {
-    document.getElementById("solution").style.height =
-      solVolume * px_scalor + "px";
-  }
-}
-function updateMassDisplay() {
-  document.querySelector("#total-mass span").textContent = (
-    totalMass - tareOffset
-  ).toFixed(3);
-}
-
-const dropsButtonBtn = document.getElementById("dropsButton");
-const pourButtonBtn = document.getElementById("pourButton");
-const removeBtn = document.getElementById("removeSolution");
 function enableButtons() {
   dropsButtonBtn.disabled = false;
   pourButtonBtn.disabled = false;
   removeBtn.disabled = false;
 }
+
 function disableButtons() {
   dropsButtonBtn.disabled = true;
   pourButtonBtn.disabled = true;
   removeBtn.disabled = true;
 }
 
-updateMassDisplay();
+function reset() {
+  const SolutionSelector = document.getElementById('Selector');
+  SolutionSelector.value = '';
+  disableButtons();
+  dropdown.disabled = false;
+
+  solVolume_2 = 0;
+  cylinderMass = getRandomAmount(25, 30);
+  totalMass_2 = cylinderMass;
+  tareOffset_2 = 0;
+  updateMassDisplay_2();
+  document.getElementById('solution').style.height = '0px';
+}
+
+dropdown.addEventListener('change', function (event) {
+  const currentSolution = event.target.value;
+  if (!currentSolution || !Densities[currentSolution]) return;
+
+  densitySolution = Densities[currentSolution].D;
+  enableButtons();
+  dropdown.disabled = true;
+});
+
+dropsButtonBtn.addEventListener('click', () => {
+  addSolution_2('drops');
+});
+
+pourButtonBtn.addEventListener('click', () => {
+  addSolution_2('pour');
+});
+
+removeBtn.addEventListener('click', () => {
+  removeSolution_2();
+});
+
+document.getElementById('tareButton').addEventListener('click', () => {
+  tareOffset_2 = totalMass_2;
+  updateMassDisplay_2();
+});
+
+function addSolution_2(size) {
+  let amount = size === 'drops' ? 0.05 : getRandomAmount(2, 3);
+  
+  solVolume_2 = Math.min(cylinderVolume / px_scalor_2, solVolume_2 + amount);
+  massSolution_2 = solVolume_2 * densitySolution;
+  totalMass_2 = massSolution_2 + cylinderMass;
+  updateMassDisplay_2();
+  increaseLiquidLevel_2();
+}
+
+function removeSolution_2() {
+  let amount = getRandomAmount(1.5, 2.5);
+  if (amount >= solVolume_2) {
+    amount = solVolume_2;
+  }
+  solVolume_2 = Math.max(0, solVolume_2 - amount);
+  massSolution_2 = solVolume_2 * densitySolution;
+  totalMass_2 = massSolution_2 + cylinderMass;
+  updateMassDisplay_2();
+  increaseLiquidLevel_2();
+}
+
+function increaseLiquidLevel_2() {
+  if (solVolume_2 > 0) {
+    document.getElementById('solution').style.height =
+      solVolume_2 * px_scalor_2 + 4 + 'px';
+  } else {
+    document.getElementById('solution').style.height =
+      solVolume_2 * px_scalor_2 + 'px';
+  }
+}
+
+function updateMassDisplay_2() {
+  document.querySelector('#total-mass-2 span').textContent = (
+    totalMass_2 - tareOffset_2
+  ).toFixed(3);
+}
+
+updateMassDisplay_2();
 
 
 
