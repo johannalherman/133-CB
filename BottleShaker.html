@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHEM 133 CB - Salt Solution Density Simulation</title>
+    <style>
+      body {
+      margin: 0;
+      padding: 0;
+      background-color: #1e1e1e;
+      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    #container {
+      position: relative;
+    }
+
+    #canvas {
+      background-color: #2b2b2b;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      cursor: grab;
+    }
+
+    #canvas:active {
+      cursor: grabbing;
+    }
+
+    .ui-overlay {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    button {
+      background-color: #444;
+      color: #fff;
+      border: 1px solid #666;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    button:hover {
+      background-color: #555;
+    }
+
+    .counter {
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    .instructions {
+      margin-top: 15px;
+      color: #aaa;
+      font-size: 14px;
+      text-align: center;
+    }
+      
+    </style>
+  </head>
+  <body>
+    <div id="container">
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <div class="ui-overlay">
+      <button id="resetBtn">Reset Pile</button>
+      <div class="counter" id="particleCount">Salt Grains: 0</div>
+    </div>
+  </div>
+  <div class="instructions">Click, drag, and rapidly shake the tilted bottle to pour salt!</div>
+
+    
+    
+  <script>
+    const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const countDisplay = document.getElementById('particleCount');
+const resetBtn = document.getElementById('resetBtn');
+
+const width = canvas.width;
+const height = canvas.height;
+
+// Heightmap setup for pile accumulation
+const floorY = height - 30;
+const gridScale = 2;
+const gridCols = Math.ceil(width / gridScale);
+const heightMap = new Float32Array(gridCols).fill(floorY);
+
+// Opaque Inverted Bottle with 20-degree tilt angle
+const bottleAngle = 20 * (Math.PI / 180); // 20 degrees in radians
+const bottle = {
+  x: width / 2,
+  y: 180,
+  width: 80,
+  height: 140,
+  neckWidth: 60,
+  neckHeight: 10,
+  angle: bottleAngle,
+  vx: 0,
+  vy: 0,
+  isDragging: false,
+  dragOffsetX: 0,
+  dragOffsetY: 0,
+  lastX: width / 2,
+  lastY: 180,
+};
+
+const gravity = 0.4;
+let particles = [];
+
+class SaltGrain {
+  constructor(x, y, vx, vy) {
+    this.x = x;
+    this.y = y;
+    this.size = 1.5 + Math.random() * 1.5;
+    this.vx = vx;
+    this.vy = vy;
+    this.settled = false;
+    const brightness = 220 + Math.floor(Math.random() * 35);
+    this.color = `rgba(${brightness}, ${brightness}, ${brightness}, 0.9)`;
+  }
+
+  update() {
+    if (this.settled) return;
+
+    this.vy += gravity;
+    this.vx *= 0.98;
+
+    this.x += this.vx;
+    this.y += this.vy;
+
+    if (this.x < 2) {
+      this.x = 2;
+      this.vx *= -0.5;
+    }
+    if (this.x > width - 2) {
+      this.x = width - 2;
+      this.vx *= -0.5;
+    }
+
+    // Heightmap Pile Collision Detection
+    const col = Math.floor(this.x / gridScale);
+    if (col >= 0 && col < gridCols) {
+      const targetY = heightMap[col];
+
+      if (this.y >= targetY) {
+        this.y = targetY;
+        this.settle(col);
+      }
+    }
+  }
+
+  settle(col) {
+    this.settled = true;
+    let currentCol = col;
+    let slide = true;
+    const maxAngleDelta = 3;
+
+    while (slide) {
+      let leftCol = Math.max(0, currentCol - 1);
+      let rightCol = Math.min(gridCols - 1, currentCol + 1);
+
+      let leftDiff = heightMap[leftCol] - heightMap[currentCol];
+      let rightDiff = heightMap[rightCol] - heightMap[currentCol];
+
+      if (leftDiff > maxAngleDelta && leftDiff >= rightDiff) {
+        currentCol = leftCol;
+      } else if (rightDiff > maxAngleDelta) {
+        currentCol = rightCol;
+      } else {
+        slide = false;
+      }
+    }
+
+    heightMap[currentCol] -= this.size * 0.8;
+    this.x = currentCol * gridScale + gridScale / 2;
+    this.y = heightMap[currentCol];
+  }
+
+  draw() {
+    ctx.fillStyle = this.color;
+    ctx.fillRect(
+      this.x - this.size / 2,
+      this.y - this.size / 2,
+      this.size,
+      this.size,
+    );
+  }
+}
+
+function drawBottle() {
+  ctx.save();
+  ctx.translate(bottle.x, bottle.y);
+  ctx.rotate(bottle.angle); // Rotate bottle context by 20 degrees
+
+  ctx.fillStyle = '#eed7fe';
+  ctx.strokeStyle = '#b0b0b0';
+  ctx.lineWidth = 3;
+
+  const w = bottle.width;
+  const h = bottle.height;
+  const nw = bottle.neckWidth;
+  const nh = bottle.neckHeight;
+
+  const bLeft = -w / 2;
+  const bRight = w / 2;
+  const bTop = -h / 2;
+  const bBottom = h / 2;
+  const nLeft = -nw / 2;
+  const nRight = nw / 2;
+  const nBottom = bBottom + nh;
+
+  // Draw local inverted bottle path centered at (0, 0)
+  ctx.beginPath();
+  ctx.moveTo(bLeft + 10, bTop);
+  ctx.lineTo(bRight - 10, bTop);
+  ctx.quadraticCurveTo(bRight, bTop, bRight, bTop + 10);
+  ctx.lineTo(bRight, bBottom - 10);
+  ctx.quadraticCurveTo(bRight, bBottom, bRight - 10, bBottom);
+  ctx.lineTo(nRight, bBottom);
+  ctx.lineTo(nRight, nBottom);
+  ctx.lineTo(nLeft, nBottom);
+  ctx.lineTo(nLeft, bBottom);
+  ctx.lineTo(bLeft + 10, bBottom);
+  ctx.quadraticCurveTo(bLeft, bBottom, bLeft, bBottom - 10);
+  ctx.lineTo(bLeft, bTop + 10);
+  ctx.quadraticCurveTo(bLeft, bTop, bLeft + 10, bTop);
+  ctx.closePath();
+
+  ctx.fill();
+  ctx.stroke();
+  // 2. Draw Label Background Badge
+  const labelWidth = w - 16;
+  const labelHeight = 44;
+  const labelY = -10; // Positioned near center of the body
+
+  ctx.fillStyle = 'none';
+  ctx.beginPath();
+  ctx.roundRect(
+    -labelWidth / 2,
+    labelY - labelHeight / 2,
+    labelWidth,
+    labelHeight,
+    4,
+  );
+  ctx.fill();
+
+  // Draw Label Text ("SHAKE TO ADD SALT")
+  ctx.fillStyle = '#8000CF';
+  ctx.font = 'bold 10px system-ui, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  // Multi-line text layout for clean fit inside the bottle width
+  ctx.fillText('SHAKE TO', 0, labelY - 7);
+  ctx.fillText('ADD SALT', 0, labelY + 7);
+
+  // Dispenser cap rim
+  ctx.fillStyle = '#8000CF';
+  ctx.fillRect(nLeft - 2, nBottom - 9, nw + 4, 11);
+
+  ctx.restore();
+}
+
+function spawnSalt(intensity) {
+  const count = Math.min(Math.floor(intensity * 1.5), 12);
+  const localNeckBottom = bottle.height / 2 + bottle.neckHeight;
+
+  for (let i = 0; i < count; i++) {
+    // Random neck position in local coordinates
+    const localX = (Math.random() - 0.5) * (bottle.neckWidth - 6);
+    const localY = localNeckBottom + Math.random() * 4;
+
+    // Transform local rotated opening relative coordinates to world space
+    const worldX =
+      bottle.x +
+      (localX * Math.cos(bottle.angle) - localY * Math.sin(bottle.angle));
+    const worldY =
+      bottle.y +
+      (localX * Math.sin(bottle.angle) + localY * Math.cos(bottle.angle));
+
+    // Ejection direction angled with the bottle's orientation
+    const ejectionSpeed = 1 + Math.random() * 3;
+    const dirX = -Math.sin(bottle.angle);
+    const dirY = Math.cos(bottle.angle);
+
+    const vx =
+      bottle.vx * 0.3 + dirX * ejectionSpeed + (Math.random() - 0.5) * 1.5;
+    const vy = Math.max(0.5, bottle.vy * 0.2) + dirY * ejectionSpeed;
+
+    particles.push(new SaltGrain(worldX, worldY, vx, vy));
+  }
+}
+
+// Controls & Mouse Interaction
+canvas.addEventListener('mousedown', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+
+  const dist = Math.hypot(mouseX - bottle.x, mouseY - bottle.y);
+
+  // Hitbox around bottle position
+  if (dist < 110) {
+    bottle.isDragging = true;
+    bottle.dragOffsetX = mouseX - bottle.x;
+    bottle.dragOffsetY = mouseY - bottle.y;
+    bottle.lastX = bottle.x;
+    bottle.lastY = bottle.y;
+  }
+});
+
+window.addEventListener('mousemove', (e) => {
+  if (!bottle.isDragging) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+
+  bottle.x = mouseX - bottle.dragOffsetX;
+  bottle.y = mouseY - bottle.dragOffsetY;
+
+  bottle.vx = bottle.x - bottle.lastX;
+  bottle.vy = bottle.y - bottle.lastY;
+
+  const speed = Math.sqrt(bottle.vx * bottle.vx + bottle.vy * bottle.vy);
+
+  if (speed > 4) {
+    spawnSalt(speed);
+  }
+
+  bottle.lastX = bottle.x;
+  bottle.lastY = bottle.y;
+});
+
+window.addEventListener('mouseup', () => {
+  bottle.isDragging = false;
+});
+
+resetBtn.addEventListener('click', () => {
+  particles = [];
+  heightMap.fill(floorY);
+});
+
+// Animation Loop
+function animate() {
+  ctx.clearRect(0, 0, width, height);
+
+  // Render Floor
+  ctx.strokeStyle = '#555';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, floorY);
+  ctx.lineTo(width, floorY);
+  ctx.stroke();
+
+  // Update and Draw Salt Particles
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].update();
+    particles[i].draw();
+  }
+
+  // Draw Tilted Bottle
+  drawBottle();
+
+  countDisplay.innerText = `Salt Grains: ${particles.length}`;
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+    
+  </script>
+  </body>
+</html>
