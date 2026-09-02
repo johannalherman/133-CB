@@ -5,17 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHEM 133 CB - Salt Solution Density Simulation</title>
     <style>
+
       body {
   margin: 0;
   padding: 0;
-  background-color: #1e1e1e;
-  color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   user-select: none;
+  font:
+    18px Arial,
+    sans-serif;
+}
+#glassware-container-1 {
+  margin: 20px;
+  position: relative;
 }
 
 #container {
@@ -39,7 +45,7 @@
 #saltCanvas {
   position: absolute;
   /* Change these to match where on your image you want the salt animation to occur */
-  top: 60px;   /* Y-offset from the top of the container */
+  top: 62px;   /* Y-offset from the top of the container */
   left: 50%;  /* X-offset from the left of the container */
   transform: translateX(-50%);
   width: 160px; /* Custom canvas width */
@@ -50,14 +56,13 @@
 #bottleCanvas {
   position: absolute;
   /* Change these to match where on your image you want the salt animation to occur */
-  top: 60px;   /* Y-offset from the top of the container */
+  top: 62px;   /* Y-offset from the top of the container */
   left: 50%;  /* X-offset from the left of the container */
   transform: translateX(-50%);
-  width: 360px; /* Custom canvas width */
+  width: 450px; /* Custom canvas width */
   height: 400px;/* Custom canvas height */
   z-index: 3; /* In front of image */
 }
-
 #bottleCanvas:active {
   cursor: grabbing;
 }
@@ -71,6 +76,39 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
+}
+
+#resetBtn-1 {
+  position: absolute;
+  z-index: 4;
+  top: 513px;
+  left: 6%;
+  width: 52px;
+  height: 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+#tareBtn-1 {
+  position: absolute;
+  z-index: 4;
+  top: 513px;
+  left: 19.5%;
+  width: 36px;
+  height: 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+#total-mass-1 {
+  position: absolute;
+  top: 488px;
+  left: 54%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  font-size: 28px;
+  font-weight: bold;
+  z-index: 10;
 }
 
 button {
@@ -101,30 +139,46 @@ button:hover {
   text-align: center;
 }
 
+
       
     </style>
   </head>
   <body>
-    <div id="container">
-  <canvas id="saltCanvas" width="160" height="400"></canvas>
-  <img
-    id="myImage"
-    src="https://github.com/johannalherman/133-CB/blob/main/Beaker%20on%20Balnce%20with%20tare%20+%20reset.png?raw=true"
-    alt="Overlay Image"
-    alt="Overlay Image"
-  />
-  <canvas id="bottleCanvas" width="360" height="400"></canvas>
+<div id="glassware-container-1">
+  <div id="container">
+    <canvas id="saltCanvas" width="160" height="400"></canvas>
+    <img
+      id="myImage"
+      src="https://github.com/johannalherman/133-CB/blob/main/Beaker%20on%20Balnce%20with%20tare%20+%20reset.png?raw=true"
+    />
+    <canvas id="bottleCanvas" width="450" height="400"></canvas>
+  </div>
+  <p id="total-mass-1"><span>0.000</span> g</p>
+  <div>
+    <button id="resetBtn-1"></button>
+    <button id="tareBtn-1"></button>
+    <div class="counter" id="particleCount">Salt Grains: 0</div>
+  </div>
 </div>
-<div class="ui-overlay">
-  <button id="resetBtn">Reset Pile</button>
-  <div class="counter" id="particleCount">Salt Grains: 0</div>
-</div>
+
 
 
     
     
   <script>
-    // Canvas setup
+function getRandomAmount(min, max) {
+  return Math.random() * (max - min) + min;
+}
+let massHold1 = getRandomAmount(35, 40);
+
+// Balance 1 setup
+let saltMass = 0;
+let beakerMass = massHold1;
+let totalMass_1 = beakerMass;
+let massSolution_1 = 0;
+let tareOffset_1 = 0;
+
+// Canvas setup
 const saltCanvas = document.getElementById('saltCanvas');
 const saltCtx = saltCanvas.getContext('2d');
 
@@ -132,9 +186,10 @@ const bottleCanvas = document.getElementById('bottleCanvas');
 const bottleCtx = bottleCanvas.getContext('2d');
 
 const countDisplay = document.getElementById('particleCount');
-const resetBtn = document.getElementById('resetBtn');
+const resetBtn_1 = document.getElementById('resetBtn-1');
+const tareBtn_1 = document.getElementById('tareBtn-1');
 
-const width = 360;
+const width = 450;
 const height = 400;
 
 // Heightmap setup for pile accumulation
@@ -146,8 +201,8 @@ const heightMap = new Float32Array(gridCols).fill(floorY);
 // Opaque Inverted Bottle state object (20-degree tilt)
 const bottleAngle = 20 * (Math.PI / 180);
 const bottle = {
-  x: width / 2,
-  y: 180,
+  x: width / 1.8,
+  y: 100,
   width: 80,
   height: 100,
   neckWidth: 60,
@@ -174,8 +229,13 @@ class SaltGrain {
     this.vx = vx;
     this.vy = vy;
     this.settled = false;
-    const brightness = 220 + Math.floor(Math.random() * 35);
-    this.color = `rgba(${brightness}, ${brightness}, ${brightness}, 0.9)`;
+
+    // Cool slate-gray shades (RGB 120-160) for clear visibility on white
+    const shade = 200 + Math.floor(Math.random() * 40);
+    this.color = `rgba(${shade}, ${shade + 5}, ${shade + 10}, 0.85)`;
+
+    // Slight shadow contrast for layered accumulation
+    this.shadowColor = `rgba(${shade - 30}, ${shade - 30}, ${shade - 30}, 0.4)`;
   }
 
   update() {
@@ -236,12 +296,22 @@ class SaltGrain {
   }
 
   draw() {
+    // Core grain body
     saltCtx.fillStyle = this.color;
     saltCtx.fillRect(
       this.x - this.size / 2,
       this.y - this.size / 2,
       this.size,
       this.size,
+    );
+
+    // Subtle edge pixel to give pile depth against pure white
+    saltCtx.fillStyle = this.shadowColor;
+    saltCtx.fillRect(
+      this.x - this.size / 2,
+      this.y + this.size / 2 - 0.5,
+      this.size,
+      0.5,
     );
   }
 }
@@ -320,10 +390,10 @@ function drawBottle() {
 }
 
 // Example: If bottleCanvas is at left: 0px and saltCanvas is at left: 200px
-const saltCanvasOffsetX = 100; 
+const saltCanvasOffsetX = 190;
 
 function spawnSalt(intensity) {
-  const count = Math.min(Math.floor(intensity * 1.5), 12);
+  const count = Math.min(Math.floor(intensity * 0.5), 8);
   const localNeckBottom = bottle.height / 2 + bottle.neckHeight;
 
   for (let i = 0; i < count; i++) {
@@ -331,18 +401,23 @@ function spawnSalt(intensity) {
     const localY = localNeckBottom + Math.random() * 4;
 
     // Calculate world position on the bottle canvas
-    const worldX = bottle.x + (localX * Math.cos(bottle.angle) - localY * Math.sin(bottle.angle));
-    const worldY = bottle.y + (localX * Math.sin(bottle.angle) + localY * Math.cos(bottle.angle));
+    const worldX =
+      bottle.x +
+      (localX * Math.cos(bottle.angle) - localY * Math.sin(bottle.angle));
+    const worldY =
+      bottle.y +
+      (localX * Math.sin(bottle.angle) + localY * Math.cos(bottle.angle));
 
     // Convert worldX to salt canvas space by subtracting the offset
-    const saltX = worldX - saltCanvasOffsetX; 
+    const saltX = worldX - saltCanvasOffsetX;
     const saltY = worldY;
 
     const ejectionSpeed = 1 + Math.random() * 3;
     const dirX = -Math.sin(bottle.angle);
     const dirY = Math.cos(bottle.angle);
 
-    const vx = bottle.vx * 0.3 + dirX * ejectionSpeed + (Math.random() - 0.5) * 1.5;
+    const vx =
+      bottle.vx * 0.3 + dirX * ejectionSpeed + (Math.random() - 0.5) * 1.5;
     const vy = Math.max(0.5, bottle.vy * 0.2) + dirY * ejectionSpeed;
 
     // Only add particles if they fall within the salt canvas boundaries
@@ -384,7 +459,7 @@ window.addEventListener('mousemove', (e) => {
 
   const speed = Math.sqrt(bottle.vx * bottle.vx + bottle.vy * bottle.vy);
 
-  if (speed > 4) {
+  if (speed > 15) {
     spawnSalt(speed);
   }
 
@@ -396,24 +471,28 @@ window.addEventListener('mouseup', () => {
   bottle.isDragging = false;
 });
 
-resetBtn.addEventListener('click', () => {
+resetBtn_1.addEventListener('click', () => {
   particles = [];
   heightMap.fill(floorY);
 });
+
+tareBtn_1.addEventListener('click', () => {
+  tareOffset_1 = beakerMass + saltMass;
+  updateMassDisplay_1();
+});
+
+function updateMassDisplay_1() {
+  document.querySelector('#total-mass-1 span').textContent = (
+    totalMass_1
+  ).toFixed(3);
+}
+updateMassDisplay_1();
 
 // Render Loop
 function animate() {
   // Clear both contexts cleanly
   saltCtx.clearRect(0, 0, width, height);
   bottleCtx.clearRect(0, 0, width, height);
-
-  // Render Floor line on back canvas
-  saltCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-  saltCtx.lineWidth = 2;
-  saltCtx.beginPath();
-  saltCtx.moveTo(0, floorY);
-  saltCtx.lineTo(width, floorY);
-  saltCtx.stroke();
 
   // Render Salt Particles on back canvas (behind image)
   for (let i = 0; i < particles.length; i++) {
@@ -423,13 +502,16 @@ function animate() {
 
   // Render Bottle on front canvas (in front of image)
   drawBottle();
-
+  saltMass = particles.length * (0.01/100)
+  totalMass_1 = beakerMass + saltMass - tareOffset_1;
+  updateMassDisplay_1();
   countDisplay.innerText = `Salt Grains: ${particles.length}`;
 
   requestAnimationFrame(animate);
 }
 
 animate();
+
 
 
     
