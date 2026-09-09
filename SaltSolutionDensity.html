@@ -359,9 +359,6 @@ hr {
 }
 
 
-
-
-
       
     </style>
   </head>
@@ -478,6 +475,7 @@ hr {
   </p>
 </div>
 
+
     
   <script>
 function getRandomAmount(min, max) {
@@ -495,9 +493,11 @@ let tareOffset_1 = 0;
 
 // Balance 2 setup
 let waterMass = 0;
+let targetWaterMass = 0; // Tracks incoming target water mass
 let totalMass_3 = beakerMass;
 let tareOffset_3 = 0;
 let solVolume_1 = 0;
+let targetSolVolume_1 = 0; // Tracks incoming target liquid level
 let px_scalor_1 = 5; // number of px in mL in beaker image
 
 // Balance 3 setup
@@ -558,16 +558,13 @@ class SaltGrain {
   constructor(x, y, vx, vy) {
     this.x = x;
     this.y = y;
-    this.size = 1.5 + Math.random() * 1.5;
+    this.size = 1.0 + Math.random();
     this.vx = vx;
     this.vy = vy;
     this.settled = false;
 
-    // Cool slate-gray shades (RGB 120-160) for clear visibility on white
     const shade = 200 + Math.floor(Math.random() * 40);
     this.color = `rgba(${shade}, ${shade + 5}, ${shade + 10}, 0.85)`;
-
-    // Slight shadow contrast for layered accumulation
     this.shadowColor = `rgba(${shade - 30}, ${shade - 30}, ${shade - 30}, 0.4)`;
   }
 
@@ -589,7 +586,6 @@ class SaltGrain {
       this.vx *= -0.5;
     }
 
-    // Heightmap Pile Collision Detection
     const col = Math.floor(this.x / gridScale);
     if (col >= 0 && col < gridCols) {
       const targetY = heightMap[col];
@@ -629,7 +625,6 @@ class SaltGrain {
   }
 
   draw() {
-    // Core grain body
     saltCtx.fillStyle = this.color;
     saltCtx.fillRect(
       this.x - this.size / 2,
@@ -638,7 +633,6 @@ class SaltGrain {
       this.size,
     );
 
-    // Subtle edge pixel to give pile depth against pure white
     saltCtx.fillStyle = this.shadowColor;
     saltCtx.fillRect(
       this.x - this.size / 2,
@@ -649,7 +643,6 @@ class SaltGrain {
   }
 }
 
-// Render Bottle on Front Canvas
 function drawBottle() {
   bottleCtx.save();
   bottleCtx.translate(bottle.x, bottle.y);
@@ -672,7 +665,6 @@ function drawBottle() {
   const nRight = nw / 2;
   const nBottom = bBottom + nh;
 
-  // Inverted bottle body path
   bottleCtx.beginPath();
   bottleCtx.moveTo(bLeft + 10, bTop);
   bottleCtx.lineTo(bRight - 10, bTop);
@@ -692,7 +684,6 @@ function drawBottle() {
   bottleCtx.fill();
   bottleCtx.stroke();
 
-  // Label Badge
   const labelWidth = w - 16;
   const labelHeight = 44;
   const labelY = 0;
@@ -707,7 +698,6 @@ function drawBottle() {
   );
   bottleCtx.fill();
 
-  // Label Text
   bottleCtx.fillStyle = '#8000CF';
   bottleCtx.font = 'bold 10px system-ui, sans-serif';
   bottleCtx.textAlign = 'center';
@@ -715,14 +705,12 @@ function drawBottle() {
   bottleCtx.fillText('SHAKE TO', 0, labelY - 7);
   bottleCtx.fillText('ADD SALT', 0, labelY + 7);
 
-  // Dispenser cap rim
   bottleCtx.fillStyle = '#8000CF';
   bottleCtx.fillRect(nLeft - 2, nBottom - 9, nw + 4, 11);
 
   bottleCtx.restore();
 }
 
-// Example: If bottleCanvas is at left: 0px and saltCanvas is at left: 200px
 const saltCanvasOffsetX = 120;
 
 function spawnSalt(intensity) {
@@ -733,7 +721,6 @@ function spawnSalt(intensity) {
     const localX = (Math.random() - 0.5) * (bottle.neckWidth - 6);
     const localY = localNeckBottom + Math.random() * 4;
 
-    // Calculate world position on the bottle canvas
     const worldX =
       bottle.x +
       (localX * Math.cos(bottle.angle) - localY * Math.sin(bottle.angle));
@@ -741,7 +728,6 @@ function spawnSalt(intensity) {
       bottle.y +
       (localX * Math.sin(bottle.angle) + localY * Math.cos(bottle.angle));
 
-    // Convert worldX to salt canvas space by subtracting the offset
     const saltX = worldX - saltCanvasOffsetX;
     const saltY = worldY;
 
@@ -753,14 +739,12 @@ function spawnSalt(intensity) {
       bottle.vx * 0.3 + dirX * ejectionSpeed + (Math.random() - 0.5) * 1.5;
     const vy = Math.max(0.5, bottle.vy * 0.2) + dirY * ejectionSpeed;
 
-    // Only add particles if they fall within the salt canvas boundaries
     if (saltX >= 0 && saltX <= saltCanvas.width) {
       particles.push(new SaltGrain(saltX, saltY, vx, vy));
     }
   }
 }
 
-// Mouse Interaction Handlers targeting bottleCanvas
 bottleCanvas.addEventListener('mousedown', (e) => {
   const rect = bottleCanvas.getBoundingClientRect();
   const mouseX = e.clientX - rect.left;
@@ -824,34 +808,38 @@ function updateMassDisplay_1() {
   document.querySelector('#total-mass-3 span').textContent =
     totalMass_1.toFixed(3);
 }
+
 function resetBalance1() {
   tareOffset_1 = 0;
-  updateMassDisplay_1();
+  waterMass = 0;
+  targetWaterMass = 0;
+  solVolume_1 = 0;
+  targetSolVolume_1 = 0;
+  increaseLiquidLevel_1();
   particles = [];
   heightMap.fill(floorY);
   waterDroplets = [];
+  totalMass_1 = beakerMass - tareOffset_1 + waterMass;
+  updateMassDisplay_1();
 }
+
 function tareBalance1() {
   tareOffset_1 = beakerMass + saltMass + waterMass;
   updateMassDisplay_1();
 }
 
-// Render Loop
 function animate() {
-  // Clear both contexts cleanly
   saltCtx.clearRect(0, 0, width, height);
   bottleCtx.clearRect(0, 0, width, height);
 
-  // Render Salt Particles on back canvas (behind image)
   for (let i = 0; i < particles.length; i++) {
     particles[i].update();
     particles[i].draw();
   }
 
-  // Render Bottle on front canvas (in front of image)
   drawBottle();
 
-  saltMass = particles.length * (0.01 / 100);
+  saltMass = particles.length / 400;
   totalMass_1 = beakerMass + saltMass + waterMass - tareOffset_1;
   updateMassDisplay_1();
 
@@ -863,7 +851,6 @@ const tab2SaltCanvas = document.getElementById('tab2SaltCanvas');
 const tab2SaltCtx = tab2SaltCanvas.getContext('2d');
 
 function transferSaltToTab2() {
-  // Reset dissolve state when importing a fresh salt pile
   isDissolving = false;
   saltOpacity = 1.0;
   tab2SaltCanvas.style.opacity = '1';
@@ -878,27 +865,24 @@ const tab2WaterCtx = tab2WaterCanvas.getContext('2d');
 const t2Width = tab2WaterCanvas.width;
 const t2Height = tab2WaterCanvas.height;
 
-// Array holding active water drops
 let waterDroplets = [];
 let totalDropletsReleased = 0;
 let isSqueezing = false;
 
-// Dissolve State Tracking
 let isDissolving = false;
-let saltOpacity = 1.0; // Starts 100% opaque
-const dissolveSpeed = 0.001; // Adjust this rate to make it fade faster/slower
+let saltOpacity = 1.0;
+const dissolveSpeed = 0.001;
 
-// Wash Bottle State
 const washBottle = {
   x: 60,
   y: 80,
   width: 70,
   height: 150,
-  nozzleCurveX: 30, // Curved straw spout pointing towards the center
+  nozzleCurveX: 30,
   isSqueezed: false,
+  angle: 20 * (Math.PI / 180),
 };
 
-// --- 2. WATER DROPLET CLASS ---
 class WaterDrop {
   constructor(x, y, vx, vy) {
     this.x = x;
@@ -910,7 +894,7 @@ class WaterDrop {
   }
 
   update() {
-    this.vy += 0.3; // Gravity on water
+    this.vy += 0.3;
     this.x += this.vx;
     this.y += this.vy;
   }
@@ -923,25 +907,19 @@ class WaterDrop {
   }
 }
 
-// --- 3. DRAW WASH BOTTLE ---// Add angle property to washBottle (20 degrees in radians)
-washBottle.angle = 20 * (Math.PI / 180);
-
 function drawWashBottle() {
   tab2WaterCtx.save();
 
-  // Translate to the center of the bottle body to rotate smoothly around its midpoint
   const centerX = washBottle.x;
   const centerY = washBottle.y + washBottle.height / 2;
   tab2WaterCtx.translate(centerX, centerY);
 
-  // Rotate 20 degrees clockwise
   tab2WaterCtx.rotate(washBottle.angle);
 
   const squeezeFactor = washBottle.isSqueezed ? 0.85 : 1.0;
   const w = washBottle.width * squeezeFactor;
   const h = washBottle.height;
 
-  // Bottle Body (drawn relative to center offset)
   tab2WaterCtx.fillStyle = 'rgba(230, 240, 245, 0.85)';
   tab2WaterCtx.strokeStyle = '#a0b0b8';
   tab2WaterCtx.lineWidth = 2;
@@ -951,15 +929,12 @@ function drawWashBottle() {
   tab2WaterCtx.fill();
   tab2WaterCtx.stroke();
 
-  // Water level inside bottle
   tab2WaterCtx.fillStyle = 'rgba(160, 220, 255, 0.4)';
   tab2WaterCtx.fillRect(-w / 2 + 3, -h / 2 + h * 0.35, w - 6, h * 0.6);
 
-  // Screw Cap
   tab2WaterCtx.fillStyle = '#8000CF';
   tab2WaterCtx.fillRect(-15, -h / 2 - 12, 30, 12);
 
-  // Curved Nozzle
   tab2WaterCtx.strokeStyle = '#8000CF';
   tab2WaterCtx.lineWidth = 4;
   tab2WaterCtx.beginPath();
@@ -973,7 +948,6 @@ function drawWashBottle() {
   );
   tab2WaterCtx.stroke();
 
-  // Label "D.I. WATER"
   tab2WaterCtx.fillStyle = '#8000CF';
   tab2WaterCtx.font = 'bold 10px system-ui, sans-serif';
   tab2WaterCtx.textAlign = 'center';
@@ -995,16 +969,13 @@ function increaseLiquidLevel_1() {
   }
 }
 
-// --- 4. SPRAY WATER STREAM ---
 function sprayWater() {
   const h = washBottle.height;
   const angle = washBottle.angle;
 
-  // Local offset of nozzle tip relative to rotation center
   const localTipX = washBottle.nozzleCurveX;
   const localTipY = -h / 2 - 45;
 
-  // Rotate local tip offset by 20 degrees
   const worldTipX =
     washBottle.x + (localTipX * Math.cos(angle) - localTipY * Math.sin(angle));
   const worldTipY =
@@ -1013,14 +984,11 @@ function sprayWater() {
     (localTipX * Math.sin(angle) + localTipY * Math.cos(angle));
 
   for (let i = 0; i < 3; i++) {
-    // Ejection velocity angled along the bottle's tilt
     const baseSpeed = 2 + Math.random() * 1.5;
     const vx = Math.cos(angle) * baseSpeed + Math.sin(angle) * -2;
     const vy = Math.sin(angle) * baseSpeed + Math.cos(angle) * 1.0;
 
     waterDroplets.push(new WaterDrop(worldTipX, worldTipY, vx, vy));
-
-    // Increment the total counter
     totalDropletsReleased++;
   }
 
@@ -1029,7 +997,6 @@ function sprayWater() {
   }
 }
 
-// --- 5. MOUSE / TOUCH EVENTS ---
 tab2WaterCanvas.addEventListener('mousedown', (e) => {
   const rect = tab2WaterCanvas.getBoundingClientRect();
   const mouseX = e.clientX - rect.left;
@@ -1039,14 +1006,12 @@ tab2WaterCanvas.addEventListener('mousedown', (e) => {
   const centerY = washBottle.y + washBottle.height / 2;
   const angle = washBottle.angle;
 
-  // Transform mouse point into rotated local coordinates
   const dx = mouseX - centerX;
   const dy = mouseY - centerY;
 
   const localMouseX = dx * Math.cos(-angle) - dy * Math.sin(-angle);
   const localMouseY = dx * Math.sin(-angle) + dy * Math.cos(-angle);
 
-  // Check rotated hit area
   const halfW = washBottle.width / 2;
   const halfH = washBottle.height / 2;
 
@@ -1066,49 +1031,62 @@ window.addEventListener('mouseup', () => {
   washBottle.isSqueezed = false;
 });
 
-// --- 6. ANIMATION LOOP FOR TAB 2 ---
+// Get Y coordinate of current liquid surface inside Tab 2 beaker
+function getBeakerSurfaceY() {
+  const baseLineY = 470; // Y-coordinate of the beaker floor on the canvas
+  return baseLineY - (solVolume_1 * px_scalor_1);
+}
+
 function animateTab2() {
   tab2WaterCtx.clearRect(0, 0, t2Width, t2Height);
 
   if (isSqueezing) {
     sprayWater();
-
-    waterMass = totalDropletsReleased * 0.05;
-    solVolume_1 = solVolume_1 + 0.05;
-    setTimeout(() => {
-      increaseLiquidLevel_1();
-      updateMassDisplay_1();
-    }, 750);
   }
 
-  // Handle Global Salt Dissolve Fading
-  if (isDissolving && saltOpacity > 0) {
-    saltOpacity -= dissolveSpeed;
-    if (saltOpacity < 0) saltOpacity = 0;
+  // --- DROPLET IMPACT & MOVEMENT ---
+  const surfaceY = getBeakerSurfaceY();
 
-    // Apply fading via CSS opacity on the salt canvas element
-    tab2SaltCanvas.style.opacity = saltOpacity.toString();
-  }
-
-  // Update & Draw Water Droplets
   for (let i = waterDroplets.length - 1; i >= 0; i--) {
     const d = waterDroplets[i];
     d.update();
     d.draw();
 
-    // Remove drops that fall off screen or fade out
-    if (d.y > t2Height || d.life <= 0) {
+    // Check if droplet hits the liquid/beaker surface or falls off screen
+    if (d.y >= surfaceY) {
+      // Drop hit the liquid! Add its mass and volume to targets
+      targetWaterMass += 0.05 / 3;
+      targetSolVolume_1 += 0.05 / 3;
+      waterDroplets.splice(i, 1);
+    } else if (d.y > t2Height || d.life <= 0) {
       waterDroplets.splice(i, 1);
     }
   }
 
-  // Draw Wash Bottle
-  drawWashBottle();
+// 1. Solution Level rises quickly (50% catchup per frame)
+if (solVolume_1 < targetSolVolume_1) {
+  solVolume_1 += (targetSolVolume_1 - solVolume_1); 
+  if (targetSolVolume_1 - solVolume_1 < 0.0001) solVolume_1 = targetSolVolume_1;
+  increaseLiquidLevel_1();
+}
 
+// 2. Balance Mass reacts more slowly (10% catchup per frame)
+if (waterMass < targetWaterMass) {
+  waterMass += (targetWaterMass - waterMass) * 0.8; 
+  if (targetWaterMass - waterMass < 0.0001) waterMass = targetWaterMass;
+}
+
+  // --- SALT DISSOLVE FADE ---
+  if (isDissolving && saltOpacity > 0) {
+    saltOpacity -= dissolveSpeed;
+    if (saltOpacity < 0) saltOpacity = 0;
+    tab2SaltCanvas.style.opacity = saltOpacity.toString();
+  }
+
+  drawWashBottle();
   requestAnimationFrame(animateTab2);
 }
 
-// Start Tab 2 animation loop
 animateTab2();
 
 // Tab 3 Content
@@ -1121,6 +1099,7 @@ function enableButtons() {
   pourButtonBtn.disabled = false;
   removeBtn.disabled = false;
 }
+
 function disableButtons() {
   dropsButtonBtn.disabled = true;
   pourButtonBtn.disabled = true;
@@ -1175,11 +1154,13 @@ function addSolution_2(size) {
   let amount = size === 'drops' ? 0.05 : getRandomAmount(2, 3);
 
   solVolume_2 = Math.min(cylinderVolume / px_scalor_2, solVolume_2 + amount);
-  massSolution_2 = solVolume_2 * densitySolution;
+  massSolution_2 =
+    (0.007519 * ((saltMass / (saltMass + waterMass)) * 100) + 0.9971) * solVolume_2; // amount = volumne (mL) in grad. cylinder
   totalMass_2 = massSolution_2 + cylinderMass;
   updateMassDisplay_2();
   increaseLiquidLevel_2();
 }
+
 function removeSolution_2() {
   let amount = getRandomAmount(1.5, 2.5);
   if (amount >= solVolume_2) {
@@ -1212,27 +1193,22 @@ updateMassDisplay_2();
 enableButtons();
 
 function openTabs(evt, Sim_part) {
-  // Declare all variables
   var i, tabcontent, tablinks;
 
-  // Get all elements with class="tabcontent" and hide them
   tabcontent = document.getElementsByClassName('tabcontent');
   for (i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = 'none';
   }
 
-  // Get all elements with class="tablinks" and remove the class "active"
   tablinks = document.getElementsByClassName('tablinks');
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(' active', '');
   }
 
-  // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(Sim_part).style.display = 'block';
   evt.currentTarget.className += ' active';
 }
 
-// Get the element with id="defaultOpen" and click on it
 document.getElementById('defaultOpen').click();
 
     
