@@ -33,6 +33,7 @@ hr {
   border: 2px solid white;
 }
 
+
 .row {
   display: flex;
 }
@@ -41,9 +42,12 @@ hr {
   padding: 0px 20px;
 }
 .tab {
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden so the tooltip isn't clipped */
   text-align: center;
+  position: relative; /* Enables absolute positioning for the tooltip */
+  display: inline-block; /* Wraps tightly around the button so left: 50% centers correctly */
 }
+
 /* Style the buttons that are used to open the tab content */
 .tab button {
   font-size: 22px;
@@ -52,22 +56,54 @@ hr {
   border: 2px solid;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
   outline: none;
   transition: 0.3s;
 }
-/* Change background color of buttons on hover */
-.tab button:hover {
+
+/* Change background color of buttons on hover (only when enabled) */
+.tab button:hover:not(:disabled) {
   background-color: #f5f5f5;
   border: 2px solid white;
   border-radius: 5px;
 }
+
+/* Optional styling for disabled appearance */
+.tab button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 /* Create an active/current tablink class */
 .tab button.active {
   border: 2px solid;
   border-radius: 5px;
   background-color: white;
 }
+
+/* Base tooltip styling attached to .tab wrapper */
+.tab::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 110%; /* Position above the button */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 10px;
+  background-color: #333;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+/* Show tooltip on hovering .tab ONLY when the button inside is disabled */
+.tab:has(button:disabled):hover::after {
+  opacity: 1;
+}
+
 /* Style the tab content */
 .tabcontent {
   display: none;
@@ -167,7 +203,6 @@ hr {
   z-index: 10;
 }
 
-
 #glassware-container-3 {
   position: relative;
   display: flex;
@@ -207,7 +242,7 @@ hr {
   top: 43px; /* Y-offset from the top of the container */
   left: 50%; /* X-offset from the left of the container */
   transform: translateX(-50%);
-  width: 400px; /* Custom canvas width */
+  width: 500px; /* Custom canvas width */
   height: 400px; /* Custom canvas height */
   z-index: 1;
 }
@@ -270,16 +305,19 @@ hr {
   z-index: 10;
 }
 
-
 #glassware-container-2 {
-  width: 400px;
-  margin: 20px;
   position: relative;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+  height: 550px;
 }
 .button-container-2 {
   position: absolute;
-  left: 0%;
+  left: 20%;
   top: 6%;
   width: 130px;
   font-size: 14px;
@@ -299,15 +337,14 @@ hr {
 }
 
 #cylinder {
-  width: 100%;
-  z-index: 5;
+  width: 400px;
+  z-index: 0;
+  margin: 34px 0px 0px 0px;
 }
 #solution-2 {
   position: absolute;
-  bottom: 24%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 13%;
+  bottom: 21.7%;
+  width: 8%;
   height: 0px;
   background: #abdcf2;
   transition: height 0.3s ease-in-out;
@@ -328,34 +365,37 @@ hr {
 }
 #resetBtn-2 {
   position: absolute;
-  top: 87.5%;
-  left: 5.8%;
-  width: 11.5%;
+  top: 88.6%;
+  left: 27.1%;
+  width: 6%;
   height: 4%;
   border: none;
   background: none;
   cursor: pointer;
+  z-index: 10;
 }
 #tareBtn-2 {
   position: absolute;
-  top: 87.5%;
-  left: 19.25%;
-  width: 7.5%;
+  top: 88.6%;
+  left: 34.1%;
+  width: 4%;
   height: 4%;
   border: none;
   background: none;
   cursor: pointer;
+  z-index: 10;
 }
 #total-mass-2 {
   position: absolute;
-  bottom: 1%;
-  left: 61%;
+  top: 84%;
+  left: 56%;
   transform: translateX(-50%);
   border-radius: 5px;
   font-size: 28px;
   font-weight: bold;
-  z-index: 0;
+  z-index: 10;
 }
+
 
 
       
@@ -392,32 +432,53 @@ hr {
     </div>
   </div>
 
-  <div class="tab" style="margin: 80px 10px 40px 10px">
-    <button class="tablinks" onclick="openTabs(event, 'Tab2'); transferSaltToTab2();">
+  <div
+    class="tab"
+    style="margin: 80px 10px 40px 10px"
+    data-tooltip="Add salt to beaker to move forward"
+  >
+    <button
+      id="tab2button"
+      disabled
+      class="tablinks"
+      onclick="
+        openTabs(event, 'Tab2')
+        transferSaltToTab2()
+      "
+    >
       Dissolve Salt in D.I. Water!
     </button>
   </div>
 </div>
 
 <div id="Tab2" class="tabcontent">
-    <div id="glassware-container-3">
-      <div id="tab2Container">
-        <canvas id="tab2SaltCanvas" width="150" height="400"></canvas>
-        <img
-          id="beaker-2"
-          src="https://github.com/johannalherman/133-CB/blob/main/Beaker%20on%20Balnce%20with%20tare%20+%20reset.png?raw=true"
-        />
-        <canvas id="tab2WaterCanvas" width="400" height="500"></canvas>
-      </div>
-      <p id="total-mass-3"><span>0.000</span> g</p>
-      <div>
-        <button id="resetBtn-3"></button>
-        <button id="tareBtn-3"></button>
-      </div>
-    <div id="solution-1"></div>
+  <div id="glassware-container-3">
+    <div id="tab2Container">
+      <canvas id="tab2SaltCanvas" width="150" height="400"></canvas>
+      <img
+        id="beaker-2"
+        src="https://github.com/johannalherman/133-CB/blob/main/Beaker%20on%20Balnce%20with%20tare%20+%20reset.png?raw=true"
+      />
+      <canvas id="tab2WaterCanvas" width="500" height="500"></canvas>
     </div>
-  <div class="tab" style="margin: 80px 10px 40px 10px">
-    <button class="tablinks" onclick="openTabs(event, 'Tab3')">
+    <p id="total-mass-3"><span>0.000</span> g</p>
+    <div>
+      <button id="resetBtn-3"></button>
+      <button id="tareBtn-3"></button>
+    </div>
+    <div id="solution-1"></div>
+  </div>
+  <div
+    class="tab"
+    style="margin: 80px 10px 40px 10px"
+    data-tooltip="Wait for salt to fully dissolve"
+  >
+    <button
+      id="tab3button"
+      disabled
+      class="tablinks"
+      onclick="openTabs(event, 'Tab3')"
+    >
       Determine Solution Density!
     </button>
   </div>
@@ -443,8 +504,15 @@ hr {
     <button id="tareBtn-2"></button>
   </div>
 
-  <div class="tab" style="margin: 40px 10px 40px 10px">
-    <button class="tablinks" onclick="openTabs(event, 'Tab1')" id="defaultOpen">
+  <div class="tab" style="margin: 80px 10px 40px 10px">
+    <button
+      id="defaultOpen"
+      class="tablinks"
+      onclick="
+        openTabs(event, 'Tab1')
+        reset()
+      "
+    >
       Return to Start!
     </button>
   </div>
@@ -475,6 +543,7 @@ hr {
 </div>
 
 
+
     
   <script>
 function getRandomAmount(min, max) {
@@ -487,20 +556,16 @@ let massHold2 = getRandomAmount(25, 30);
 let saltMass = 0;
 let beakerMass = massHold1;
 let totalMass_1 = beakerMass;
-let massSolution_1 = 0;
 let tareOffset_1 = 0;
 
 // Balance 2 setup
 let waterMass = 0;
 let targetWaterMass = 0; // Tracks incoming target water mass
-let totalMass_3 = beakerMass;
-let tareOffset_3 = 0;
 let solVolume_1 = 0;
 let targetSolVolume_1 = 0; // Tracks incoming target liquid level
 let px_scalor_1 = 5; // number of px in mL in beaker image
 
 // Balance 3 setup
-let densitySolution = 1;
 let cylinderMass = massHold2;
 let totalMass_2 = cylinderMass;
 let massSolution_2 = 0;
@@ -520,6 +585,9 @@ const resetBtn_1 = document.getElementById('resetBtn-1');
 const tareBtn_1 = document.getElementById('tareBtn-1');
 const resetBtn_3 = document.getElementById('resetBtn-3');
 const tareBtn_3 = document.getElementById('tareBtn-3');
+
+const tab2button = document.getElementById("tab2button");
+const tab3button = document.getElementById("tab3button");
 
 const width = bottleCanvas.width;
 const height = bottleCanvas.height;
@@ -787,6 +855,8 @@ window.addEventListener('mouseup', () => {
   bottle.isDragging = false;
 });
 
+
+
 resetBtn_1.addEventListener('click', () => {
   resetBalance1();
 });
@@ -807,21 +877,29 @@ function updateMassDisplay_1() {
   document.querySelector('#total-mass-3 span').textContent =
     totalMass_1.toFixed(3);
 }
-
 function resetBalance1() {
   tareOffset_1 = 0;
+  saltMass = 0; 
   waterMass = 0;
   targetWaterMass = 0;
   solVolume_1 = 0;
   targetSolVolume_1 = 0;
+  totalMass_1 = beakerMass - tareOffset_1 + saltMass + waterMass;
+  updateMassDisplay_1();
   increaseLiquidLevel_1();
+  saltOpacity = 1.0;
+
   particles = [];
+  bottle.x = 213;
+  bottle.y= 100;
+
   heightMap.fill(floorY);
   waterDroplets = [];
-  totalMass_1 = beakerMass - tareOffset_1 + waterMass;
-  updateMassDisplay_1();
+  
+  tab2button.disabled = true;
+  tab3button.disabled = true;
+  openTabs(event, 'Tab1');
 }
-
 function tareBalance1() {
   tareOffset_1 = beakerMass + saltMass + waterMass;
   updateMassDisplay_1();
@@ -838,7 +916,11 @@ function animate() {
 
   drawBottle();
 
-  saltMass = particles.length / 400;
+  saltMass = particles.length / 500;
+  if (saltMass > 0) {
+    tab2button.disabled = false;
+  }
+  
   totalMass_1 = beakerMass + saltMass + waterMass - tareOffset_1;
   updateMassDisplay_1();
 
@@ -873,11 +955,11 @@ let saltOpacity = 1.0;
 const dissolveSpeed = 0.001;
 
 const washBottle = {
-  x: 60,
-  y: 80,
-  width: 70,
+  x: 90,
+  y: 120,
+  width: 105,
   height: 150,
-  nozzleCurveX: 30,
+  nozzleCurveX: 40,
   isSqueezed: false,
   angle: 20 * (Math.PI / 180),
 };
@@ -915,7 +997,7 @@ function drawWashBottle() {
 
   tab2WaterCtx.rotate(washBottle.angle);
 
-  const squeezeFactor = washBottle.isSqueezed ? 0.85 : 1.0;
+  const squeezeFactor = washBottle.isSqueezed ? 0.90 : 1.0;
   const w = washBottle.width * squeezeFactor;
   const h = washBottle.height;
 
@@ -932,10 +1014,10 @@ function drawWashBottle() {
   tab2WaterCtx.fillRect(-w / 2 + 3, -h / 2 + h * 0.35, w - 6, h * 0.6);
 
   tab2WaterCtx.fillStyle = '#8000CF';
-  tab2WaterCtx.fillRect(-15, -h / 2 - 12, 30, 12);
+  tab2WaterCtx.fillRect(-24, -h / 2 - 18, 48, 18);
 
   tab2WaterCtx.strokeStyle = '#8000CF';
-  tab2WaterCtx.lineWidth = 4;
+  tab2WaterCtx.lineWidth = 8;
   tab2WaterCtx.beginPath();
   tab2WaterCtx.moveTo(0, -h / 2 - 12);
   tab2WaterCtx.lineTo(0, -h / 2 - 30);
@@ -948,7 +1030,7 @@ function drawWashBottle() {
   tab2WaterCtx.stroke();
 
   tab2WaterCtx.fillStyle = '#8000CF';
-  tab2WaterCtx.font = 'bold 10px system-ui, sans-serif';
+  tab2WaterCtx.font = 'bold 14px system-ui, sans-serif';
   tab2WaterCtx.textAlign = 'center';
   tab2WaterCtx.fillText('D.I.', 0, -h / 7 - 7);
   tab2WaterCtx.fillText('WATER', 0, -h / 7 + 7);
@@ -1033,7 +1115,7 @@ window.addEventListener('mouseup', () => {
 // Get Y coordinate of current liquid surface inside Tab 2 beaker
 function getBeakerSurfaceY() {
   const baseLineY = 470; // Y-coordinate of the beaker floor on the canvas
-  return baseLineY - (solVolume_1 * px_scalor_1);
+  return baseLineY - solVolume_1 * px_scalor_1;
 }
 
 function animateTab2() {
@@ -1062,18 +1144,19 @@ function animateTab2() {
     }
   }
 
-// 1. Solution Level rises quickly (50% catchup per frame)
-if (solVolume_1 < targetSolVolume_1) {
-  solVolume_1 += (targetSolVolume_1 - solVolume_1); 
-  if (targetSolVolume_1 - solVolume_1 < 0.0001) solVolume_1 = targetSolVolume_1;
-  increaseLiquidLevel_1();
-}
+  // 1. Solution Level rises quickly (50% catchup per frame)
+  if (solVolume_1 < targetSolVolume_1) {
+    solVolume_1 += targetSolVolume_1 - solVolume_1;
+    if (targetSolVolume_1 - solVolume_1 < 0.0001)
+      solVolume_1 = targetSolVolume_1;
+    increaseLiquidLevel_1();
+  }
 
-// 2. Balance Mass reacts more slowly (10% catchup per frame)
-if (waterMass < targetWaterMass) {
-  waterMass += (targetWaterMass - waterMass) * 0.8; 
-  if (targetWaterMass - waterMass < 0.0001) waterMass = targetWaterMass;
-}
+  // 2. Balance Mass reacts more slowly (10% catchup per frame)
+  if (waterMass < targetWaterMass) {
+    waterMass += (targetWaterMass - waterMass) * 0.8;
+    if (targetWaterMass - waterMass < 0.0001) waterMass = targetWaterMass;
+  }
 
   // --- SALT DISSOLVE FADE ---
   if (isDissolving && saltOpacity > 0) {
@@ -1083,6 +1166,9 @@ if (waterMass < targetWaterMass) {
   }
 
   drawWashBottle();
+  if (saltOpacity < 0.25 && waterMass > 10) {
+    tab3button.disabled = false;
+  }
   requestAnimationFrame(animateTab2);
 }
 
@@ -1106,19 +1192,8 @@ function disableButtons() {
 }
 
 function reset() {
-  saltMass = 0;
-  beakerMass = massHold1;
-  totalMass_1 = beakerMass;
-  massSolution_1 = 0;
-  tareOffset_1 = 0;
-  updateMassDisplay_1();
-
-  solVolume_2 = 0;
-  cylinderMass = massHold2;
-  totalMass_2 = cylinderMass;
-  tareOffset_2 = 0;
-  updateMassDisplay_2();
-  document.getElementById('solution-2').style.height = '0px';
+  resetBalance1();
+  resetBalance2();
 
   openTabs(event, 'Tab1');
 }
@@ -1136,13 +1211,17 @@ removeBtn.addEventListener('click', () => {
 const resetBtn_2 = document.getElementById('resetBtn-2');
 const tareBtn_2 = document.getElementById('tareBtn-2');
 
-resetBtn_2.addEventListener('click', () => {
+function resetBalance2() {
   solVolume_2 = 0;
   cylinderMass = massHold2;
   totalMass_2 = cylinderMass;
   tareOffset_2 = 0;
   updateMassDisplay_2();
   document.getElementById('solution-2').style.height = '0px';
+}
+
+resetBtn_2.addEventListener('click', () => {
+  resetBalance2();
 });
 tareBtn_2.addEventListener('click', () => {
   tareOffset_2 = totalMass_2;
@@ -1154,7 +1233,8 @@ function addSolution_2(size) {
 
   solVolume_2 = Math.min(cylinderVolume / px_scalor_2, solVolume_2 + amount);
   massSolution_2 =
-    (0.007519 * ((saltMass / (saltMass + waterMass)) * 100) + 0.9971) * solVolume_2; // amount = volumne (mL) in grad. cylinder
+    (0.007519 * ((saltMass / (saltMass + waterMass)) * 100) + 0.9971) *
+    solVolume_2; // amount = volumne (mL) in grad. cylinder
   totalMass_2 = massSolution_2 + cylinderMass;
   updateMassDisplay_2();
   increaseLiquidLevel_2();
@@ -1166,7 +1246,9 @@ function removeSolution_2() {
     amount = solVolume_2;
   }
   solVolume_2 = Math.max(0, solVolume_2 - amount);
-  massSolution_2 = solVolume_2 * densitySolution;
+  massSolution_2 =
+    (0.007519 * ((saltMass / (saltMass + waterMass)) * 100) + 0.9971) *
+    solVolume_2; // amount = volumne (mL) in grad. cylinder
   totalMass_2 = massSolution_2 + cylinderMass;
   updateMassDisplay_2();
   increaseLiquidLevel_2();
