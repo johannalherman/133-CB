@@ -40,81 +40,244 @@ hr {
   flex: 50%;
   padding: 0px 20px;
 }
-.column-dropdowns {
-  margin: auto;
+.tab {
+  overflow: hidden;
+  text-align: center;
 }
-
-
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  font-size: 22px;
+  padding: 10px 20px;
+  background-image: linear-gradient(#b4c6ff, #e7edff 50%, #b4c6ff);
+  border: 2px solid;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  outline: none;
+  transition: 0.3s;
+}
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #f5f5f5;
+  border: 2px solid white;
+  border-radius: 5px;
+}
+/* Create an active/current tablink class */
+.tab button.active {
+  border: 2px solid;
+  border-radius: 5px;
+  background-color: white;
+}
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 10px;
+  border: 2px solid #8000cf;
+  border-radius: 5px;
+}
 
 #glassware-container-1 {
-  margin: 20px;
   position: relative;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
 }
-
-.button-container-1 {
+#container {
+  position: relative;
+  width: 400px;
+  height: 550px;
+}
+#beaker {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 6%;
-  width: 160px;
-  font-size: 14px;
-  font-style: italic;
-  line-height: 0;
-  z-index: 10;
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
+  pointer-events: none; /* Allows mouse clicks to pass through to the bottle canvas */
+  object-fit: contain;
 }
-.button-container-1 button {
-  border: 2px solid #8000cf;
-  border-radius: 5px;
-  margin: 2px;
-  padding: 8px 16px;
+#saltCanvas {
+  position: absolute;
+  /* Change these to match where on your image you want the salt animation to occur */
+  top: 43px; /* Y-offset from the top of the container */
+  left: 50%; /* X-offset from the left of the container */
+  transform: translateX(-50%);
+  width: 140px; /* Custom canvas width */
+  height: 400px; /* Custom canvas height */
+  z-index: 1; /* Behind image */
+  background: none;
+}
+#bottleCanvas {
+  position: absolute;
+  /* Change these to match where on your image you want the salt animation to occur */
+  top: 62px; /* Y-offset from the top of the container */
+  left: 50%; /* X-offset from the left of the container */
+  transform: translateX(-50%);
+  width: 400px; /* Custom canvas width */
+  height: 400px; /* Custom canvas height */
+  z-index: 3; /* In front of image */
+}
+#bottleCanvas:active {
+  cursor: grabbing;
+}
+.ui-overlay {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+#resetBtn-1 {
+  position: absolute;
+  z-index: 4;
+  top: 88.9%;
+  left: 27.4%;
+  width: 5.7%;
+  height: 4%;
+  border: none;
+  background: none;
   cursor: pointer;
 }
-.button-container-1 button:hover {
-  border: 2px solid black;
-}
-
-#balance-1 {
-  width: 100%;
-  z-index: 5;
-}
-canvas {
-  /* display: block;*/
-  margin: auto;
-  position: relative;
-  width: 0px;
-  height: 0px;
-  z-index: -10;
-}
-.button-float-1 button {
+#tareBtn-1 {
   position: absolute;
-  top: 83%;
-  left: 19.25%;
-  width: 24px;
-  height: 16px;
+  z-index: 4;
+  top: 88.9%;
+  left: 34%;
+  width: 4.3%;
+  height: 4%;
   border: none;
   background: none;
   cursor: pointer;
 }
 #total-mass-1 {
   position: absolute;
-  top: 78%;
-  left: 61%;
+  top: 84%;
+  left: 56%;
   transform: translateX(-50%);
   border-radius: 5px;
-  font-size: 22px;
+  font-size: 28px;
   font-weight: bold;
-  z-index: 0;
+  z-index: 10;
 }
 
 
+#glassware-container-3 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+}
+#tab2Container {
+  position: relative;
+  width: 400px;
+  height: 550px;
+}
+#beaker-2 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
+  pointer-events: none; /* Allows mouse clicks to pass through to the bottle canvas */
+  object-fit: contain;
+}
+#tab2SaltCanvas {
+  position: absolute;
+  /* Change these to match where on your image you want the salt animation to occur */
+  top: 43px; /* Y-offset from the top of the container */
+  left: 50%; /* X-offset from the left of the container */
+  transform: translateX(-50%);
+  width: 140px; /* Custom canvas width */
+  height: 400px; /* Custom canvas height */
+  z-index: 1; /* Behind image */
+}
+#tab2WaterCanvas {
+  position: absolute;
+  top: 43px; /* Y-offset from the top of the container */
+  left: 50%; /* X-offset from the left of the container */
+  transform: translateX(-50%);
+  width: 400px; /* Custom canvas width */
+  height: 400px; /* Custom canvas height */
+  z-index: 1;
+}
+#tab2WaterCanvas:active {
+  cursor: grabbing;
+}
+#solution-1 {
+  position: absolute;
+  bottom: 19.7%;
+  left: 50.1%;
+  transform: translateX(-50%);
+  width: 19.2%;
+  height: 0px;
+  background: #abdcf2;
+  transition: height 0.3s ease-in-out;
+  opacity: 0.75;
+  z-index: 0;
+}
+#solution-1::after {
+  content: '';
+  position: absolute;
+  top: 0px;
+  right: 50.1%;
+  transform: translateX(50%);
+  width: 100%;
+  height: 5px;
+  background: #def1fa; /* Subtle meniscus highlight */
+  border-radius: 0% 0% 50% 50%; /* Round only the bottom corners */
+  z-index: 0;
+}
+#resetBtn-3 {
+  position: absolute;
+  z-index: 4;
+  top: 88.9%;
+  left: 27.4%;
+  width: 5.7%;
+  height: 4%;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+#tareBtn-3 {
+  position: absolute;
+  z-index: 4;
+  top: 88.9%;
+  left: 34%;
+  width: 4.3%;
+  height: 4%;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+#total-mass-3 {
+  position: absolute;
+  top: 84%;
+  left: 56%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  font-size: 28px;
+  font-weight: bold;
+  z-index: 10;
+}
+
 
 #glassware-container-2 {
+  width: 400px;
   margin: 20px;
   position: relative;
   display: inline-block;
 }
-
 .button-container-2 {
   position: absolute;
   left: 0%;
@@ -164,24 +327,33 @@ canvas {
   border-radius: 0% 0% 50% 50%; /* Round only the bottom corners */
   z-index: 0;
 }
-
-.button-float-2 button {
+#resetBtn-2 {
   position: absolute;
-  bottom: 8.9%;
+  top: 87.5%;
+  left: 5.8%;
+  width: 11.5%;
+  height: 4%;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+#tareBtn-2 {
+  position: absolute;
+  top: 87.5%;
   left: 19.25%;
-  width: 24px;
-  height: 16px;
+  width: 7.5%;
+  height: 4%;
   border: none;
   background: none;
   cursor: pointer;
 }
 #total-mass-2 {
   position: absolute;
-  bottom: 1.4%;
+  bottom: 1%;
   left: 61%;
   transform: translateX(-50%);
   border-radius: 5px;
-  font-size: 22px;
+  font-size: 28px;
   font-weight: bold;
   z-index: 0;
 }
@@ -194,59 +366,91 @@ canvas {
     </style>
   </head>
   <body>
-<div style="text-align: right; padding: 10px 20px;">
-<button id="resetButton" class="control-button" type="button" onclick="reset()">
-  Reset All Controls
-</button>
+<div style="text-align: right; padding: 10px 20px">
+  <button
+    id="resetButton"
+    class="control-button"
+    type="button"
+    onclick="reset()"
+  >
+    Reset All Controls
+  </button>
 </div>
 <hr />
 
-<div class="row">
-  <div class="column">
-    <!--Balance Area #1 Code-->
-    <div id="glassware-container-1">
-      <div class="button-container-1">
-        <p>Salt Controls</p>
-        <button id="addSmallacidBtn" type="button">Add Small Amount</button>
-        <button id="addLargeacidBtn" type="button">Add Large Amount</button>
-      </div>
+<div id="Tab1" class="tabcontent">
+  <!--Balance Area #1 Code-->
+  <div id="glassware-container-1">
+    <div id="container">
+      <canvas id="saltCanvas" width="150" height="400"></canvas>
       <img
-        id="balance-1"
-        src="https://github.com/johannalherman/133-CB/blob/main/Beaker%20+%20Balnce%20with%20tare.png?raw=true"
+        id="beaker"
+        src="https://github.com/johannalherman/133-CB/blob/main/Beaker%20on%20Balnce%20with%20tare%20+%20reset.png?raw=true"
       />
-      <p id="total-mass-1"><span>0.000</span> g</p>
-      <div class="button-float-1">
-        <button
-          id="tareButton-1"
-          type="button"
-          aria-label="Tare Scale"
-        ></button>
-      </div>
-      <canvas id="canvas"></canvas>
+      <canvas id="bottleCanvas" width="400" height="400"></canvas>
+    </div>
+    <p id="total-mass-1"><span>0.000</span> g</p>
+    <div>
+      <button id="resetBtn-1"></button>
+      <button id="tareBtn-1"></button>
     </div>
   </div>
 
-  <div class="column">
-    <!--Balance Area #2 Code-->
-    <div id="glassware-container-2">
-      <div class="button-container-2">
-        <p>Solution Controls</p>
-        <button id="dropsButton" type="button" disabled>Add Drops</button>
-        <button id="pourButton" type="button" disabled>Pour In</button>
-        <button id="removeSolution" type="button" disabled>Pour Out</button>
-      </div>
+  <div class="tab" style="margin: 80px 10px 40px 10px">
+    <button class="tablinks" onclick="openTabs(event, 'Tab2'); transferSaltToTab2();">
+      Dissolve Salt in D.I. Water!
+    </button>
+  </div>
+</div>
 
-      <div id="solution-2"></div>
-      <img
-        id="cylinder"
-        src="https://github.com/johannalherman/133-CB/blob/main/Grad%20Cyld%20+%20Balnce%20with%20tare.png?raw=true"
-        alt="Graduated cylinder on balance"
-      />
-      <p id="total-mass-2"><span>0.000</span> g</p>
-      <div class="button-float-2">
-        <button id="tareButton" type="button" aria-label="Tare Scale"></button>
+<div id="Tab2" class="tabcontent">
+    <div id="glassware-container-3">
+      <div id="tab2Container">
+        <canvas id="tab2SaltCanvas" width="150" height="400"></canvas>
+        <img
+          id="beaker-2"
+          src="https://github.com/johannalherman/133-CB/blob/main/Beaker%20on%20Balnce%20with%20tare%20+%20reset.png?raw=true"
+        />
+        <canvas id="tab2WaterCanvas" width="400" height="500"></canvas>
       </div>
+      <p id="total-mass-3"><span>0.000</span> g</p>
+      <div>
+        <button id="resetBtn-3"></button>
+        <button id="tareBtn-3"></button>
+      </div>
+    <div id="solution-1"></div>
     </div>
+  <div class="tab" style="margin: 80px 10px 40px 10px">
+    <button class="tablinks" onclick="openTabs(event, 'Tab3')">
+      Determine Solution Density!
+    </button>
+  </div>
+</div>
+<div id="Tab3" class="tabcontent">
+  <!--Balance Area #2 Code-->
+  <div id="glassware-container-2">
+    <div class="button-container-2">
+      <p>Solution Controls</p>
+      <button id="dropsButton" type="button">Add Drops</button>
+      <button id="pourButton" type="button">Pour In</button>
+      <button id="removeSolution" type="button">Pour Out</button>
+    </div>
+
+    <div id="solution-2"></div>
+    <img
+      id="cylinder"
+      src="https://github.com/johannalherman/133-CB/blob/main/Grad%20Cylinder%20on%20Balnce%20with%20tare%20+%20reset.png?raw=true"
+      alt="Graduated cylinder on balance"
+    />
+    <p id="total-mass-2"><span>0.000</span> g</p>
+    <button id="resetBtn-2"></button>
+    <button id="tareBtn-2"></button>
+  </div>
+
+  <div class="tab" style="margin: 40px 10px 40px 10px">
+    <button class="tablinks" onclick="openTabs(event, 'Tab1')" id="defaultOpen">
+      Return to Start!
+    </button>
   </div>
 </div>
 
@@ -274,26 +478,640 @@ canvas {
   </p>
 </div>
 
-
-
-
-    
     
   <script>
 function getRandomAmount(min, max) {
   return Math.random() * (max - min) + min;
 }
+let massHold1 = getRandomAmount(35, 40);
+let massHold2 = getRandomAmount(25, 30);
 
+// Balance 1 setup
+let saltMass = 0;
+let beakerMass = massHold1;
+let totalMass_1 = beakerMass;
+let massSolution_1 = 0;
+let tareOffset_1 = 0;
+
+// Balance 2 setup
+let waterMass = 0;
+let totalMass_3 = beakerMass;
+let tareOffset_3 = 0;
+let solVolume_1 = 0;
+let px_scalor_1 = 5; // number of px in mL in beaker image
+
+// Balance 3 setup
 let densitySolution = 1;
-let cylinderMass = getRandomAmount(25, 30);
+let cylinderMass = massHold2;
 let totalMass_2 = cylinderMass;
 let massSolution_2 = 0;
 let tareOffset_2 = 0;
 let solVolume_2 = 0;
 let cylinderVolume = 380; // Total px height volume of the cylinder
-let px_scalor_2 = 29.047902121796465; // number of px in mL in cylinder image
+let px_scalor_2 = 36.14543470311407; // number of px in mL in cylinder image
 
+// Canvas setup
+const saltCanvas = document.getElementById('saltCanvas');
+const saltCtx = saltCanvas.getContext('2d');
 
+const bottleCanvas = document.getElementById('bottleCanvas');
+const bottleCtx = bottleCanvas.getContext('2d');
+
+const resetBtn_1 = document.getElementById('resetBtn-1');
+const tareBtn_1 = document.getElementById('tareBtn-1');
+const resetBtn_3 = document.getElementById('resetBtn-3');
+const tareBtn_3 = document.getElementById('tareBtn-3');
+
+const width = bottleCanvas.width;
+const height = bottleCanvas.height;
+
+// Heightmap setup for pile accumulation
+const floorY = height - 0;
+const gridScale = 2;
+const gridCols = Math.ceil(width / gridScale);
+const heightMap = new Float32Array(gridCols).fill(floorY);
+
+// Opaque Inverted Bottle state object (20-degree tilt)
+const bottleAngle = 20 * (Math.PI / 180);
+const bottle = {
+  x: width / 1.8,
+  y: 100,
+  width: 80,
+  height: 100,
+  neckWidth: 60,
+  neckHeight: 10,
+  angle: bottleAngle,
+  vx: 0,
+  vy: 0,
+  isDragging: false,
+  dragOffsetX: 0,
+  dragOffsetY: 0,
+  lastX: width / 2,
+  lastY: 180,
+};
+
+const gravity = 0.4;
+let particles = [];
+
+// Salt Particle Class
+class SaltGrain {
+  constructor(x, y, vx, vy) {
+    this.x = x;
+    this.y = y;
+    this.size = 1.5 + Math.random() * 1.5;
+    this.vx = vx;
+    this.vy = vy;
+    this.settled = false;
+
+    // Cool slate-gray shades (RGB 120-160) for clear visibility on white
+    const shade = 200 + Math.floor(Math.random() * 40);
+    this.color = `rgba(${shade}, ${shade + 5}, ${shade + 10}, 0.85)`;
+
+    // Slight shadow contrast for layered accumulation
+    this.shadowColor = `rgba(${shade - 30}, ${shade - 30}, ${shade - 30}, 0.4)`;
+  }
+
+  update() {
+    if (this.settled) return;
+
+    this.vy += gravity;
+    this.vx *= 0.98;
+
+    this.x += this.vx;
+    this.y += this.vy;
+
+    if (this.x < 2) {
+      this.x = 2;
+      this.vx *= -0.5;
+    }
+    if (this.x > width - 2) {
+      this.x = width - 2;
+      this.vx *= -0.5;
+    }
+
+    // Heightmap Pile Collision Detection
+    const col = Math.floor(this.x / gridScale);
+    if (col >= 0 && col < gridCols) {
+      const targetY = heightMap[col];
+
+      if (this.y >= targetY) {
+        this.y = targetY;
+        this.settle(col);
+      }
+    }
+  }
+
+  settle(col) {
+    this.settled = true;
+    let currentCol = col;
+    let slide = true;
+    const maxAngleDelta = 3;
+
+    while (slide) {
+      let leftCol = Math.max(0, currentCol - 1);
+      let rightCol = Math.min(gridCols - 1, currentCol + 1);
+
+      let leftDiff = heightMap[leftCol] - heightMap[currentCol];
+      let rightDiff = heightMap[rightCol] - heightMap[currentCol];
+
+      if (leftDiff > maxAngleDelta && leftDiff >= rightDiff) {
+        currentCol = leftCol;
+      } else if (rightDiff > maxAngleDelta) {
+        currentCol = rightCol;
+      } else {
+        slide = false;
+      }
+    }
+
+    heightMap[currentCol] -= this.size * 0.8;
+    this.x = currentCol * gridScale + gridScale / 2;
+    this.y = heightMap[currentCol];
+  }
+
+  draw() {
+    // Core grain body
+    saltCtx.fillStyle = this.color;
+    saltCtx.fillRect(
+      this.x - this.size / 2,
+      this.y - this.size / 2,
+      this.size,
+      this.size,
+    );
+
+    // Subtle edge pixel to give pile depth against pure white
+    saltCtx.fillStyle = this.shadowColor;
+    saltCtx.fillRect(
+      this.x - this.size / 2,
+      this.y + this.size / 2 - 0.5,
+      this.size,
+      0.5,
+    );
+  }
+}
+
+// Render Bottle on Front Canvas
+function drawBottle() {
+  bottleCtx.save();
+  bottleCtx.translate(bottle.x, bottle.y);
+  bottleCtx.rotate(bottle.angle);
+
+  bottleCtx.fillStyle = '#eed7fe';
+  bottleCtx.strokeStyle = '#b0b0b0';
+  bottleCtx.lineWidth = 3;
+
+  const w = bottle.width;
+  const h = bottle.height;
+  const nw = bottle.neckWidth;
+  const nh = bottle.neckHeight;
+
+  const bLeft = -w / 2;
+  const bRight = w / 2;
+  const bTop = -h / 2;
+  const bBottom = h / 2;
+  const nLeft = -nw / 2;
+  const nRight = nw / 2;
+  const nBottom = bBottom + nh;
+
+  // Inverted bottle body path
+  bottleCtx.beginPath();
+  bottleCtx.moveTo(bLeft + 10, bTop);
+  bottleCtx.lineTo(bRight - 10, bTop);
+  bottleCtx.quadraticCurveTo(bRight, bTop, bRight, bTop + 10);
+  bottleCtx.lineTo(bRight, bBottom - 10);
+  bottleCtx.quadraticCurveTo(bRight, bBottom, bRight - 10, bBottom);
+  bottleCtx.lineTo(nRight, bBottom);
+  bottleCtx.lineTo(nRight, nBottom);
+  bottleCtx.lineTo(nLeft, nBottom);
+  bottleCtx.lineTo(nLeft, bBottom);
+  bottleCtx.lineTo(bLeft + 10, bBottom);
+  bottleCtx.quadraticCurveTo(bLeft, bBottom, bLeft, bBottom - 10);
+  bottleCtx.lineTo(bLeft, bTop + 10);
+  bottleCtx.quadraticCurveTo(bLeft, bTop, bLeft + 10, bTop);
+  bottleCtx.closePath();
+
+  bottleCtx.fill();
+  bottleCtx.stroke();
+
+  // Label Badge
+  const labelWidth = w - 16;
+  const labelHeight = 44;
+  const labelY = 0;
+
+  bottleCtx.beginPath();
+  bottleCtx.roundRect(
+    -labelWidth / 2,
+    labelY - labelHeight / 2,
+    labelWidth,
+    labelHeight,
+    4,
+  );
+  bottleCtx.fill();
+
+  // Label Text
+  bottleCtx.fillStyle = '#8000CF';
+  bottleCtx.font = 'bold 10px system-ui, sans-serif';
+  bottleCtx.textAlign = 'center';
+  bottleCtx.textBaseline = 'middle';
+  bottleCtx.fillText('SHAKE TO', 0, labelY - 7);
+  bottleCtx.fillText('ADD SALT', 0, labelY + 7);
+
+  // Dispenser cap rim
+  bottleCtx.fillStyle = '#8000CF';
+  bottleCtx.fillRect(nLeft - 2, nBottom - 9, nw + 4, 11);
+
+  bottleCtx.restore();
+}
+
+// Example: If bottleCanvas is at left: 0px and saltCanvas is at left: 200px
+const saltCanvasOffsetX = 120;
+
+function spawnSalt(intensity) {
+  const count = Math.min(Math.floor(intensity * 0.5), 8);
+  const localNeckBottom = bottle.height / 2 + bottle.neckHeight;
+
+  for (let i = 0; i < count; i++) {
+    const localX = (Math.random() - 0.5) * (bottle.neckWidth - 6);
+    const localY = localNeckBottom + Math.random() * 4;
+
+    // Calculate world position on the bottle canvas
+    const worldX =
+      bottle.x +
+      (localX * Math.cos(bottle.angle) - localY * Math.sin(bottle.angle));
+    const worldY =
+      bottle.y +
+      (localX * Math.sin(bottle.angle) + localY * Math.cos(bottle.angle));
+
+    // Convert worldX to salt canvas space by subtracting the offset
+    const saltX = worldX - saltCanvasOffsetX;
+    const saltY = worldY;
+
+    const ejectionSpeed = 1 + Math.random() * 3;
+    const dirX = -Math.sin(bottle.angle);
+    const dirY = Math.cos(bottle.angle);
+
+    const vx =
+      bottle.vx * 0.3 + dirX * ejectionSpeed + (Math.random() - 0.5) * 1.5;
+    const vy = Math.max(0.5, bottle.vy * 0.2) + dirY * ejectionSpeed;
+
+    // Only add particles if they fall within the salt canvas boundaries
+    if (saltX >= 0 && saltX <= saltCanvas.width) {
+      particles.push(new SaltGrain(saltX, saltY, vx, vy));
+    }
+  }
+}
+
+// Mouse Interaction Handlers targeting bottleCanvas
+bottleCanvas.addEventListener('mousedown', (e) => {
+  const rect = bottleCanvas.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+
+  const dist = Math.hypot(mouseX - bottle.x, mouseY - bottle.y);
+
+  if (dist < 110) {
+    bottle.isDragging = true;
+    bottle.dragOffsetX = mouseX - bottle.x;
+    bottle.dragOffsetY = mouseY - bottle.y;
+    bottle.lastX = bottle.x;
+    bottle.lastY = bottle.y;
+  }
+});
+
+window.addEventListener('mousemove', (e) => {
+  if (!bottle.isDragging) return;
+
+  const rect = bottleCanvas.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+
+  bottle.x = mouseX - bottle.dragOffsetX;
+  bottle.y = mouseY - bottle.dragOffsetY;
+
+  bottle.vx = bottle.x - bottle.lastX;
+  bottle.vy = bottle.y - bottle.lastY;
+
+  const speed = Math.sqrt(bottle.vx * bottle.vx + bottle.vy * bottle.vy);
+
+  if (speed > 15) {
+    spawnSalt(speed);
+  }
+
+  bottle.lastX = bottle.x;
+  bottle.lastY = bottle.y;
+});
+
+window.addEventListener('mouseup', () => {
+  bottle.isDragging = false;
+});
+
+resetBtn_1.addEventListener('click', () => {
+  resetBalance1();
+});
+resetBtn_3.addEventListener('click', () => {
+  resetBalance1();
+});
+
+tareBtn_1.addEventListener('click', () => {
+  tareBalance1();
+});
+tareBtn_3.addEventListener('click', () => {
+  tareBalance1();
+});
+
+function updateMassDisplay_1() {
+  document.querySelector('#total-mass-1 span').textContent =
+    totalMass_1.toFixed(3);
+  document.querySelector('#total-mass-3 span').textContent =
+    totalMass_1.toFixed(3);
+}
+function resetBalance1() {
+  tareOffset_1 = 0;
+  updateMassDisplay_1();
+  particles = [];
+  heightMap.fill(floorY);
+  waterDroplets = [];
+}
+function tareBalance1() {
+  tareOffset_1 = beakerMass + saltMass + waterMass;
+  updateMassDisplay_1();
+}
+
+// Render Loop
+function animate() {
+  // Clear both contexts cleanly
+  saltCtx.clearRect(0, 0, width, height);
+  bottleCtx.clearRect(0, 0, width, height);
+
+  // Render Salt Particles on back canvas (behind image)
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].update();
+    particles[i].draw();
+  }
+
+  // Render Bottle on front canvas (in front of image)
+  drawBottle();
+
+  saltMass = particles.length * (0.01 / 100);
+  totalMass_1 = beakerMass + saltMass + waterMass - tareOffset_1;
+  updateMassDisplay_1();
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+const tab2SaltCanvas = document.getElementById('tab2SaltCanvas');
+const tab2SaltCtx = tab2SaltCanvas.getContext('2d');
+
+function transferSaltToTab2() {
+  // Reset dissolve state when importing a fresh salt pile
+  isDissolving = false;
+  saltOpacity = 1.0;
+  tab2SaltCanvas.style.opacity = '1';
+
+  tab2SaltCtx.clearRect(0, 0, tab2SaltCanvas.width, tab2SaltCanvas.height);
+  tab2SaltCtx.drawImage(saltCanvas, 0, 0);
+}
+
+const tab2WaterCanvas = document.getElementById('tab2WaterCanvas');
+const tab2WaterCtx = tab2WaterCanvas.getContext('2d');
+
+const t2Width = tab2WaterCanvas.width;
+const t2Height = tab2WaterCanvas.height;
+
+// Array holding active water drops
+let waterDroplets = [];
+let totalDropletsReleased = 0;
+let isSqueezing = false;
+
+// Dissolve State Tracking
+let isDissolving = false;
+let saltOpacity = 1.0; // Starts 100% opaque
+const dissolveSpeed = 0.001; // Adjust this rate to make it fade faster/slower
+
+// Wash Bottle State
+const washBottle = {
+  x: 60,
+  y: 80,
+  width: 70,
+  height: 150,
+  nozzleCurveX: 30, // Curved straw spout pointing towards the center
+  isSqueezed: false,
+};
+
+// --- 2. WATER DROPLET CLASS ---
+class WaterDrop {
+  constructor(x, y, vx, vy) {
+    this.x = x;
+    this.y = y;
+    this.vx = vx;
+    this.vy = vy;
+    this.radius = 2 + Math.random() * 1.5;
+    this.life = 1.0;
+  }
+
+  update() {
+    this.vy += 0.3; // Gravity on water
+    this.x += this.vx;
+    this.y += this.vy;
+  }
+
+  draw() {
+    tab2WaterCtx.fillStyle = '#abdcf2';
+    tab2WaterCtx.beginPath();
+    tab2WaterCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    tab2WaterCtx.fill();
+  }
+}
+
+// --- 3. DRAW WASH BOTTLE ---// Add angle property to washBottle (20 degrees in radians)
+washBottle.angle = 20 * (Math.PI / 180);
+
+function drawWashBottle() {
+  tab2WaterCtx.save();
+
+  // Translate to the center of the bottle body to rotate smoothly around its midpoint
+  const centerX = washBottle.x;
+  const centerY = washBottle.y + washBottle.height / 2;
+  tab2WaterCtx.translate(centerX, centerY);
+
+  // Rotate 20 degrees clockwise
+  tab2WaterCtx.rotate(washBottle.angle);
+
+  const squeezeFactor = washBottle.isSqueezed ? 0.85 : 1.0;
+  const w = washBottle.width * squeezeFactor;
+  const h = washBottle.height;
+
+  // Bottle Body (drawn relative to center offset)
+  tab2WaterCtx.fillStyle = 'rgba(230, 240, 245, 0.85)';
+  tab2WaterCtx.strokeStyle = '#a0b0b8';
+  tab2WaterCtx.lineWidth = 2;
+
+  tab2WaterCtx.beginPath();
+  tab2WaterCtx.roundRect(-w / 2, -h / 2, w, h, 8);
+  tab2WaterCtx.fill();
+  tab2WaterCtx.stroke();
+
+  // Water level inside bottle
+  tab2WaterCtx.fillStyle = 'rgba(160, 220, 255, 0.4)';
+  tab2WaterCtx.fillRect(-w / 2 + 3, -h / 2 + h * 0.35, w - 6, h * 0.6);
+
+  // Screw Cap
+  tab2WaterCtx.fillStyle = '#8000CF';
+  tab2WaterCtx.fillRect(-15, -h / 2 - 12, 30, 12);
+
+  // Curved Nozzle
+  tab2WaterCtx.strokeStyle = '#8000CF';
+  tab2WaterCtx.lineWidth = 4;
+  tab2WaterCtx.beginPath();
+  tab2WaterCtx.moveTo(0, -h / 2 - 12);
+  tab2WaterCtx.lineTo(0, -h / 2 - 30);
+  tab2WaterCtx.quadraticCurveTo(
+    0,
+    -h / 2 - 50,
+    washBottle.nozzleCurveX,
+    -h / 2 - 45,
+  );
+  tab2WaterCtx.stroke();
+
+  // Label "D.I. WATER"
+  tab2WaterCtx.fillStyle = '#8000CF';
+  tab2WaterCtx.font = 'bold 10px system-ui, sans-serif';
+  tab2WaterCtx.textAlign = 'center';
+  tab2WaterCtx.fillText('D.I.', 0, -h / 7 - 7);
+  tab2WaterCtx.fillText('WATER', 0, -h / 7 + 7);
+  tab2WaterCtx.fillText('CLICK', 0, h / 5 - 7);
+  tab2WaterCtx.fillText('TO ADD', 0, h / 5 + 7);
+
+  tab2WaterCtx.restore();
+}
+
+function increaseLiquidLevel_1() {
+  if (solVolume_1 > 0) {
+    document.getElementById('solution-1').style.height =
+      solVolume_1 * px_scalor_1 + 4 + 'px';
+  } else {
+    document.getElementById('solution-1').style.height =
+      solVolume_1 * px_scalor_1 + 'px';
+  }
+}
+
+// --- 4. SPRAY WATER STREAM ---
+function sprayWater() {
+  const h = washBottle.height;
+  const angle = washBottle.angle;
+
+  // Local offset of nozzle tip relative to rotation center
+  const localTipX = washBottle.nozzleCurveX;
+  const localTipY = -h / 2 - 45;
+
+  // Rotate local tip offset by 20 degrees
+  const worldTipX =
+    washBottle.x + (localTipX * Math.cos(angle) - localTipY * Math.sin(angle));
+  const worldTipY =
+    washBottle.y +
+    h / 2 +
+    (localTipX * Math.sin(angle) + localTipY * Math.cos(angle));
+
+  for (let i = 0; i < 3; i++) {
+    // Ejection velocity angled along the bottle's tilt
+    const baseSpeed = 2 + Math.random() * 1.5;
+    const vx = Math.cos(angle) * baseSpeed + Math.sin(angle) * -2;
+    const vy = Math.sin(angle) * baseSpeed + Math.cos(angle) * 1.0;
+
+    waterDroplets.push(new WaterDrop(worldTipX, worldTipY, vx, vy));
+
+    // Increment the total counter
+    totalDropletsReleased++;
+  }
+
+  if (!isDissolving) {
+    isDissolving = true;
+  }
+}
+
+// --- 5. MOUSE / TOUCH EVENTS ---
+tab2WaterCanvas.addEventListener('mousedown', (e) => {
+  const rect = tab2WaterCanvas.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+
+  const centerX = washBottle.x;
+  const centerY = washBottle.y + washBottle.height / 2;
+  const angle = washBottle.angle;
+
+  // Transform mouse point into rotated local coordinates
+  const dx = mouseX - centerX;
+  const dy = mouseY - centerY;
+
+  const localMouseX = dx * Math.cos(-angle) - dy * Math.sin(-angle);
+  const localMouseY = dx * Math.sin(-angle) + dy * Math.cos(-angle);
+
+  // Check rotated hit area
+  const halfW = washBottle.width / 2;
+  const halfH = washBottle.height / 2;
+
+  if (
+    localMouseX >= -halfW &&
+    localMouseX <= halfW &&
+    localMouseY >= -halfH &&
+    localMouseY <= halfH
+  ) {
+    isSqueezing = true;
+    washBottle.isSqueezed = true;
+  }
+});
+
+window.addEventListener('mouseup', () => {
+  isSqueezing = false;
+  washBottle.isSqueezed = false;
+});
+
+// --- 6. ANIMATION LOOP FOR TAB 2 ---
+function animateTab2() {
+  tab2WaterCtx.clearRect(0, 0, t2Width, t2Height);
+
+  if (isSqueezing) {
+    sprayWater();
+
+    waterMass = totalDropletsReleased * 0.05;
+    solVolume_1 = solVolume_1 + 0.05;
+    setTimeout(() => {
+      increaseLiquidLevel_1();
+      updateMassDisplay_1();
+    }, 750);
+  }
+
+  // Handle Global Salt Dissolve Fading
+  if (isDissolving && saltOpacity > 0) {
+    saltOpacity -= dissolveSpeed;
+    if (saltOpacity < 0) saltOpacity = 0;
+
+    // Apply fading via CSS opacity on the salt canvas element
+    tab2SaltCanvas.style.opacity = saltOpacity.toString();
+  }
+
+  // Update & Draw Water Droplets
+  for (let i = waterDroplets.length - 1; i >= 0; i--) {
+    const d = waterDroplets[i];
+    d.update();
+    d.draw();
+
+    // Remove drops that fall off screen or fade out
+    if (d.y > t2Height || d.life <= 0) {
+      waterDroplets.splice(i, 1);
+    }
+  }
+
+  // Draw Wash Bottle
+  drawWashBottle();
+
+  requestAnimationFrame(animateTab2);
+}
+
+// Start Tab 2 animation loop
+animateTab2();
+
+// Tab 3 Content
 const dropsButtonBtn = document.getElementById('dropsButton');
 const pourButtonBtn = document.getElementById('pourButton');
 const removeBtn = document.getElementById('removeSolution');
@@ -303,7 +1121,6 @@ function enableButtons() {
   pourButtonBtn.disabled = false;
   removeBtn.disabled = false;
 }
-
 function disableButtons() {
   dropsButtonBtn.disabled = true;
   pourButtonBtn.disabled = true;
@@ -311,43 +1128,58 @@ function disableButtons() {
 }
 
 function reset() {
-  disableButtons();
+  saltMass = 0;
+  beakerMass = massHold1;
+  totalMass_1 = beakerMass;
+  massSolution_1 = 0;
+  tareOffset_1 = 0;
+  updateMassDisplay_1();
+
   solVolume_2 = 0;
-  cylinderMass = getRandomAmount(25, 30);
+  cylinderMass = massHold2;
   totalMass_2 = cylinderMass;
   tareOffset_2 = 0;
   updateMassDisplay_2();
   document.getElementById('solution-2').style.height = '0px';
-}
 
+  openTabs(event, 'Tab1');
+}
 
 dropsButtonBtn.addEventListener('click', () => {
   addSolution_2('drops');
 });
-
 pourButtonBtn.addEventListener('click', () => {
   addSolution_2('pour');
 });
-
 removeBtn.addEventListener('click', () => {
   removeSolution_2();
 });
 
-document.getElementById('tareButton').addEventListener('click', () => {
+const resetBtn_2 = document.getElementById('resetBtn-2');
+const tareBtn_2 = document.getElementById('tareBtn-2');
+
+resetBtn_2.addEventListener('click', () => {
+  solVolume_2 = 0;
+  cylinderMass = massHold2;
+  totalMass_2 = cylinderMass;
+  tareOffset_2 = 0;
+  updateMassDisplay_2();
+  document.getElementById('solution-2').style.height = '0px';
+});
+tareBtn_2.addEventListener('click', () => {
   tareOffset_2 = totalMass_2;
   updateMassDisplay_2();
 });
 
 function addSolution_2(size) {
   let amount = size === 'drops' ? 0.05 : getRandomAmount(2, 3);
-  
+
   solVolume_2 = Math.min(cylinderVolume / px_scalor_2, solVolume_2 + amount);
   massSolution_2 = solVolume_2 * densitySolution;
   totalMass_2 = massSolution_2 + cylinderMass;
   updateMassDisplay_2();
   increaseLiquidLevel_2();
 }
-
 function removeSolution_2() {
   let amount = getRandomAmount(1.5, 2.5);
   if (amount >= solVolume_2) {
@@ -377,8 +1209,31 @@ function updateMassDisplay_2() {
 }
 
 updateMassDisplay_2();
+enableButtons();
 
+function openTabs(evt, Sim_part) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
 
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName('tabcontent');
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = 'none';
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName('tablinks');
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(' active', '');
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(Sim_part).style.display = 'block';
+  evt.currentTarget.className += ' active';
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById('defaultOpen').click();
 
     
   </script>
